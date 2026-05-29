@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create professional music charts with color-coded chords, lyrics, and sections. Export to PDF matching your band's chart format.">
+  <title>Chart Creator — Music Charts</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ===== TOOLBAR ===== -->
+  <header class="toolbar" id="toolbar">
+    <div class="toolbar-brand">
+      <div class="toolbar-brand-icon">🎵</div>
+      <span class="toolbar-brand-text">Chart Creator</span>
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn btn-sm" id="btn-new" title="New Chart">
+        <span>📄</span> New
+      </button>
+      <button class="btn btn-sm" id="btn-load" title="Load Chart from JSON">
+        <span>📂</span> Open
+      </button>
+      <button class="btn btn-sm" id="btn-save-json" title="Save Chart as JSON">
+        <span>💾</span> Save
+      </button>
+      <div class="toolbar-divider"></div>
+      <button class="btn btn-sm" id="btn-undo" title="Undo (Cmd+Z)" disabled>
+        <span>↩</span> Undo
+      </button>
+      <button class="btn btn-sm" id="btn-redo" title="Redo (Cmd+Shift+Z)" disabled>
+        <span>↪</span> Redo
+      </button>
+      <div class="toolbar-divider"></div>
+      <button class="btn btn-sm btn-primary" id="btn-export-pdf" title="Export as PDF">
+        <span>📥</span> Export PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- ===== SIDEBAR (Metadata) ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">Song Details</div>
+
+      <div class="sidebar-section">
+        <div class="form-group">
+          <label class="form-label" for="input-title">Title</label>
+          <input class="form-input" type="text" id="input-title" placeholder="Song title…">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="input-artist">Artist</label>
+          <input class="form-input" type="text" id="input-artist" placeholder="Artist name…">
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="input-key">Key</label>
+            <select class="form-select" id="input-key">
+              <option value="">—</option>
+              <option value="C">C</option>
+              <option value="C#">C# / Db</option>
+              <option value="D">D</option>
+              <option value="Eb">Eb</option>
+              <option value="E">E</option>
+              <option value="F">F</option>
+              <option value="F#">F# / Gb</option>
+              <option value="G">G</option>
+              <option value="Ab">Ab</option>
+              <option value="A">A</option>
+              <option value="Bb">Bb</option>
+              <option value="B">B</option>
+              <option value="Cm">Cm</option>
+              <option value="C#m">C#m</option>
+              <option value="Dm">Dm</option>
+              <option value="Ebm">Ebm</option>
+              <option value="Em">Em</option>
+              <option value="Fm">Fm</option>
+              <option value="F#m">F#m</option>
+              <option value="Gm">Gm</option>
+              <option value="G#m">G#m</option>
+              <option value="Am">Am</option>
+              <option value="Bbm">Bbm</option>
+              <option value="Bm">Bm</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-bpm">BPM</label>
+            <input class="form-input" type="number" id="input-bpm" placeholder="—" min="20" max="300">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="input-capo">Capo</label>
+            <select class="form-select" id="input-capo">
+              <option value="">None</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-original-key">Original Key</label>
+            <select class="form-select" id="input-original-key">
+              <option value="">—</option>
+              <option value="C">C</option>
+              <option value="C#">C# / Db</option>
+              <option value="D">D</option>
+              <option value="Eb">Eb</option>
+              <option value="E">E</option>
+              <option value="F">F</option>
+              <option value="F#">F# / Gb</option>
+              <option value="G">G</option>
+              <option value="Ab">Ab</option>
+              <option value="A">A</option>
+              <option value="Bb">Bb</option>
+              <option value="B">B</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transpose Controls -->
+      <div class="sidebar-section">
+        <div class="sidebar-header" style="padding: 0 0 var(--space-md) 0; border: none;">Transpose</div>
+        <div class="transpose-bar">
+          <button class="transpose-btn" id="btn-transpose-down" title="Transpose down one semitone">−</button>
+          <span class="transpose-key" id="transpose-display">—</span>
+          <button class="transpose-btn" id="btn-transpose-up" title="Transpose up one semitone">+</button>
+        </div>
+      </div>
+
+      <!-- Saved Charts -->
+      <div class="sidebar-section" style="flex: 1;">
+        <div class="sidebar-header" style="padding: 0 0 var(--space-md) 0; border: none;">Saved Charts</div>
+        <div id="saved-charts-list" style="font-size: 12px; color: var(--text-tertiary);">
+          No saved charts yet.
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== EDITOR PANEL ===== -->
+    <section class="editor-panel" id="editor-panel">
+      <div class="editor-toolbar">
+        <div class="editor-toolbar-left">
+          <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary);">Sections</span>
+        </div>
+        <div class="editor-toolbar-left">
+          <button class="btn btn-sm" id="btn-add-section-top" title="Add section">
+            <span>+</span> Add Section
+          </button>
+          <select class="form-select" id="template-select" title="Section template" style="width:150px; padding:4px 8px; font-size:11px;"></select>
+          <button class="btn btn-sm" id="btn-import-text" title="Import from pasted text">
+            <span>📋</span> Import Text
+          </button>
+        </div>
+      </div>
+
+      <!-- Search & Replace bar (inline, VS Code style) -->
+      <div class="search-replace-bar" id="search-replace-bar" style="display:none;">
+        <input type="text" class="form-input search-bar-input" id="search-find-input" placeholder="Find…">
+        <input type="text" class="form-input search-bar-input" id="search-replace-input" placeholder="Replace with…">
+        <label class="search-option" title="Case sensitive"><input type="checkbox" id="search-case-sensitive"> Aa</label>
+        <label class="search-option" title="Use regex"><input type="checkbox" id="search-regex"> .*</label>
+        <button class="btn btn-sm btn-primary" id="search-replace-btn">Replace All</button>
+        <button class="btn btn-sm btn-ghost" id="search-close-btn">✕</button>
+      </div>
+
+      <div class="editor-sections" id="editor-sections">
+        <!-- Section cards rendered here by JS -->
+        <div class="empty-state" id="empty-state">
+          <div class="empty-state-icon">🎶</div>
+          <div class="empty-state-title">No sections yet</div>
+          <div class="empty-state-desc">
+            Click "Add Section" to start building your chart, or import text from an existing chart.
+          </div>
+        </div>
+      </div>
+
+      <div class="add-section-area" id="add-section-area" style="display: none;">
+        <button class="add-section-btn" id="btn-add-section-bottom">
+          <span>+</span> Add Section
+        </button>
+      </div>
+
+      <!-- Batch action bar (floating, shown when multi-select active) -->
+      <div class="batch-action-bar" id="batch-action-bar" style="display:none;">
+        <span class="batch-count">0 sections selected</span>
+        <button class="btn btn-sm" id="batch-move-up" title="Move up">↑</button>
+        <button class="btn btn-sm" id="batch-move-down" title="Move down">↓</button>
+        <button class="btn btn-sm" id="batch-transpose-up" title="Transpose selected up">♯</button>
+        <button class="btn btn-sm" id="batch-transpose-down" title="Transpose selected down">♭</button>
+        <button class="btn btn-sm btn-danger" id="batch-delete" title="Delete selected">🗑 Delete</button>
+        <button class="btn btn-sm btn-ghost" id="batch-clear" title="Clear selection">✕</button>
+      </div>
+    </section>
+
+    <!-- ===== PREVIEW PANEL ===== -->
+    <aside class="preview-panel" id="preview-panel">
+      <div class="preview-header">
+        <span class="preview-header-title">Preview</span>
+        <div style="display: flex; gap: var(--space-sm);">
+          <button class="btn btn-sm btn-ghost" id="btn-zoom-out" title="Zoom out">−</button>
+          <span id="zoom-level" style="font-size: 11px; color: var(--text-tertiary); min-width: 36px; text-align: center; line-height: 28px;">100%</span>
+          <button class="btn btn-sm btn-ghost" id="btn-zoom-in" title="Zoom in">+</button>
+        </div>
+      </div>
+      <div class="preview-scroll" id="preview-scroll">
+        <div class="chart-wrapper" id="chart-wrapper">
+          <div class="chart-paper" id="chart-paper">
+            <!-- Rendered preview here -->
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ===== STATUS BAR ===== -->
+  <footer class="status-bar" id="status-bar">
+    <div class="status-bar-left">
+      <div class="status-indicator">
+        <div class="status-dot"></div>
+        <span id="status-autosave">Auto-saved</span>
+      </div>
+    </div>
+    <div class="status-bar-right">
+      <span id="status-sections">0 sections</span>
+      <span id="status-key">—</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Hidden file input for JSON import -->
+<input type="file" id="file-input-json" accept=".json" style="display: none;">
+
+<!-- Import Text Modal -->
+<div id="import-modal" class="modal-overlay">
+  <div class="modal-content">
+    <h3 class="modal-title">Import from Text</h3>
+    <p class="modal-description">
+      Paste raw chart text. Lines starting with chord names (A, Bm, C#m7, etc.) are detected as chords.
+      Lines in <code>[brackets]</code> become section labels. Everything else is lyrics.
+    </p>
+    <textarea id="import-textarea" class="modal-textarea" placeholder="Paste chart text here…"></textarea>
+    <div class="modal-footer">
+      <button class="btn" id="btn-import-cancel">Cancel</button>
+      <button class="btn btn-primary" id="btn-import-confirm">Import</button>
+    </div>
+  </div>
+</div>
+
+<!-- jsPDF + html2canvas from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+
+<script src="app.js"></script>
+</body>
+</html>
