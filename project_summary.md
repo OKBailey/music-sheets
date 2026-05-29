@@ -127,10 +127,10 @@ To run the application locally without needing to touch the Terminal, a native m
 * **App Link**: **[Chart Creator.app](file:///Users/randymitchell/Desktop/Chart%20Creator.app)**
 * **Launcher Behavior**:
   1. Checks if a process is listening on port `8080` (e.g. `lsof -i :8080`).
-  2. If none is found, it changes directory to the workspace and starts the Python server (`python3 -m http.server 8080 &`).
+  2. If none is found, it changes directory to the workspace and starts the Python server (`python3 -m http.server 8080 &`). To ensure python3 resolves correctly when launched from Finder (which does not inherit login shell PATHs), the script constructs a robust PATH environment including Homebrew paths `/opt/homebrew/bin` and `/usr/local/bin`.
   3. Opens the local server URL (`http://localhost:8080`) in the default web browser.
   4. Immediately exits the launching applet to keep your macOS Dock tidy.
-* **Custom Icon**: Bundled with a custom macOS squircle icon showing a neon guitar crossed with a creative writing pen.
+* **Custom Icon**: Bundled with a custom macOS squircle icon showing a neon guitar crossed with a creative writing pen. Finder caches are bypassed using app bundle renaming triggers to force Finder updates.
 
 ---
 
@@ -138,7 +138,7 @@ To run the application locally without needing to touch the Terminal, a native m
 
 ## ✅ Implemented (May 2026)
 
-All 7 High-Priority Workflow Enhancements from the roadmap:
+All 7 High-Priority Workflow Enhancements and 7 Tier 2 UX & Design Polish features from the roadmap:
 
 | Feature | Implementation |
 |:---|:---|
@@ -149,6 +149,13 @@ All 7 High-Priority Workflow Enhancements from the roadmap:
 | **Multi-Select & Batch Actions** | `Cmd+Click` section selection, floating batch bar with Delete, Move Up/Down, Transpose, Deselect All |
 | **Line Drag-and-Drop** | Drag handles on each line, within-section and cross-section reordering via HTML5 drag API |
 | **Search & Replace** | Inline bar (`Cmd+H`) with case-sensitive and regex toggles, chord-aware replacement across all sections |
+| **Page Break Indicators** | Zoom-independent visual break lines overlaid in preview at 792pt equivalents (Letter page height) |
+| **Shortcut Cheat Sheet** | Keyboard shortcut helper modal toggled via toolbar button or `?` hotkey |
+| **Time Signature Selector** | `Time Sig` metadata field in sidebar, displaying in the preview/PDF next to BPM (hidden when unset) |
+| **Arrangement Notes Field** | Free-text notes area in sidebar rendered under metadata with text-wrapping on preview/PDF |
+| **Dark Mode Preview Toggle** | Clean preview invert mode via `.chart-paper.dark-mode` selector |
+| **Improved Saved Charts** | Advanced library list with search filtering, alpha/key/date sorting, pinning favorites, and unique ID legacy migration |
+| **Delete Recovery Toast** | Confirms permanent library/batch deletions, while single section deletes trigger an Undo Toast notification |
 
 ### New Keyboard Shortcuts
 
@@ -159,17 +166,7 @@ All 7 High-Priority Workflow Enhancements from the roadmap:
 | `Cmd+H` | Open search & replace |
 | `Cmd+S` | Save (existing) |
 | `Cmd+E` | Export PDF (existing) |
-
----
-
-### 🎨 Visual & Stage Polish
-* **Page Break Indicators**: Show page splits on the virtual paper matching PDF output.
-* **Dark Mode Preview**: Toggle inverted colors for stage readability.
-* **Keyboard Shortcut Modal**: Interactive guide for workflow shortcuts.
-* **Time Signature Field**: Metadata input rendered in the chart header.
-* **Arrangement Notes**: Collapsible band notes block in the sidebar.
-* **Improved Library UI**: Metadata indicators (key, date), favorites, and search.
-* **Delete Recovery**: Confirmation dialogs or toast undo actions.
+| `?` | Open keyboard shortcuts cheat sheet |
 
 ### 🔮 Advanced Extensibility
 * **Setlist Mode**: Group, reorder, and export combined multi-song PDFs.

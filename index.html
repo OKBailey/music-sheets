@@ -35,6 +35,9 @@
         <span>↪</span> Redo
       </button>
       <div class="toolbar-divider"></div>
+      <button class="btn btn-sm" id="btn-shortcuts" title="Keyboard Shortcuts (?)">
+        <span>❓</span>
+      </button>
       <button class="btn btn-sm btn-primary" id="btn-export-pdf" title="Export as PDF">
         <span>📥</span> Export PDF
       </button>
@@ -95,6 +98,17 @@
             <label class="form-label" for="input-bpm">BPM</label>
             <input class="form-input" type="number" id="input-bpm" placeholder="—" min="20" max="300">
           </div>
+          <div class="form-group">
+            <label class="form-label" for="input-timesig">Time Sig</label>
+            <select class="form-select" id="input-timesig">
+              <option value="">—</option>
+              <option value="4/4">4/4</option>
+              <option value="3/4">3/4</option>
+              <option value="6/8">6/8</option>
+              <option value="2/4">2/4</option>
+              <option value="12/8">12/8</option>
+            </select>
+          </div>
         </div>
 
         <div class="form-row">
@@ -144,10 +158,24 @@
         </div>
       </div>
 
+      <!-- Arrangement Notes -->
+      <div class="sidebar-section">
+        <div class="sidebar-header" style="padding: 0 0 var(--space-md) 0; border: none;">Notes</div>
+        <textarea id="input-notes" class="form-input" placeholder="Band cues, setlist notes..." rows="3" style="resize: vertical;"></textarea>
+      </div>
+
       <!-- Saved Charts -->
-      <div class="sidebar-section" style="flex: 1;">
+      <div class="sidebar-section" style="flex: 1; display: flex; flex-direction: column;">
         <div class="sidebar-header" style="padding: 0 0 var(--space-md) 0; border: none;">Saved Charts</div>
-        <div id="saved-charts-list" style="font-size: 12px; color: var(--text-tertiary);">
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <input type="text" id="library-search" class="form-input" placeholder="Search..." style="flex: 1; font-size: 11px; padding: 4px 8px;">
+          <select id="library-sort" class="form-select" style="width: auto; font-size: 11px; padding: 4px 8px;">
+            <option value="date">Newest</option>
+            <option value="alpha">A-Z</option>
+            <option value="key">Key</option>
+          </select>
+        </div>
+        <div id="saved-charts-list" style="font-size: 12px; color: var(--text-tertiary); overflow-y: auto; flex: 1;">
           No saved charts yet.
         </div>
       </div>
@@ -214,6 +242,7 @@
       <div class="preview-header">
         <span class="preview-header-title">Preview</span>
         <div style="display: flex; gap: var(--space-sm);">
+          <button class="btn btn-sm btn-ghost" id="btn-dark-mode" title="Toggle Dark Mode">🌙</button>
           <button class="btn btn-sm btn-ghost" id="btn-zoom-out" title="Zoom out">−</button>
           <span id="zoom-level" style="font-size: 11px; color: var(--text-tertiary); min-width: 36px; text-align: center; line-height: 28px;">100%</span>
           <button class="btn btn-sm btn-ghost" id="btn-zoom-in" title="Zoom in">+</button>
@@ -264,6 +293,25 @@
     <div class="modal-footer">
       <button class="btn" id="btn-import-cancel">Cancel</button>
       <button class="btn btn-primary" id="btn-import-confirm">Import</button>
+    </div>
+  </div>
+</div>
+
+<!-- Shortcuts Modal -->
+<div id="shortcuts-modal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 400px;">
+    <h3 class="modal-title">Keyboard Shortcuts</h3>
+    <table class="shortcuts-table" style="width: 100%; text-align: left; font-size: 13px; line-height: 1.8;">
+      <tr><th><code>Cmd/Ctrl + Z</code></th><td>Undo</td></tr>
+      <tr><th><code>Cmd/Ctrl + Shift + Z</code></th><td>Redo</td></tr>
+      <tr><th><code>Cmd/Ctrl + H</code></th><td>Find & Replace</td></tr>
+      <tr><th><code>Cmd/Ctrl + S</code></th><td>Save Chart</td></tr>
+      <tr><th><code>Cmd/Ctrl + E</code></th><td>Export PDF</td></tr>
+      <tr><th><code>Cmd/Ctrl + Click</code></th><td>Select Multiple Sections</td></tr>
+      <tr><th><code>?</code></th><td>Show this cheat sheet</td></tr>
+    </table>
+    <div class="modal-footer" style="margin-top: 24px;">
+      <button class="btn btn-primary" id="btn-shortcuts-close">Got it</button>
     </div>
   </div>
 </div>

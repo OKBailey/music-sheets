@@ -876,6 +876,7 @@ body {
 }
 
 .chart-paper {
+  position: relative;
   width: 372px;
   min-height: 500px;
   background: #ffffff;
@@ -1722,4 +1723,96 @@ body {
   gap: var(--space-sm);
   justify-content: flex-end;
   margin-top: var(--space-lg);
+}
+
+/* ========================================================================
+   TIER 2 POLISH (Added Features)
+   ======================================================================== */
+
+.page-break-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1px dashed rgba(200, 200, 200, 0.8);
+  pointer-events: none;
+  z-index: 10;
+}
+
+#chart-paper.dark-mode {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.library-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+}
+
+.library-item:hover {
+  background: var(--bg-surface);
+}
+
+.library-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.library-item-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.library-item-meta {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.favorite-btn {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 14px;
+  transition: color var(--transition-fast);
+}
+
+.favorite-btn:hover {
+  color: var(--accent-warning);
+}
+
+.favorite-btn.favorited {
+  color: var(--accent-warning);
+}
+
+.arrangement-notes {
+  margin: var(--space-md) 0;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(0, 0, 0, 0.02);
+  border-left: 3px solid #ccc;
+  font-size: 13px;
+  font-style: italic;
+  color: #555;
+  white-space: pre-wrap;
+}
+
+/* Make sure modal content table looks good */
+.shortcuts-table th {
+  padding: 4px 8px 4px 0;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.shortcuts-table td {
+  padding: 4px 0 4px 8px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
 }

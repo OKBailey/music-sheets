@@ -115,9 +115,11 @@
       title: '',
       artist: '',
       bpm: null,
+      timeSignature: '',
       key: '',
       originalKey: '',
       capo: '',
+      arrangementNotes: '',
       sections: []
     };
   }
@@ -164,8 +166,10 @@
   const inputArtist = $('input-artist');
   const inputKey = $('input-key');
   const inputBpm = $('input-bpm');
+  const inputTimesig = $('input-timesig');
   const inputCapo = $('input-capo');
   const inputOriginalKey = $('input-original-key');
+  const inputNotes = $('input-notes');
   const editorSections = $('editor-sections');
   const emptyState = $('empty-state');
   const addSectionArea = $('add-section-area');
@@ -253,11 +257,17 @@
     if (!state.id) state.id = generateId();
     const name = state.title || 'Untitled Chart';
     const charts = getSavedCharts();
-    const existing = charts.findIndex(c => c.data.id === state.id);
+    const existing = charts.findIndex(c => 
+      (c.data.id && c.data.id === state.id) ||
+      (!c.data.id && c.name === name)
+    );
     const entry = {
       name,
       data: JSON.parse(JSON.stringify(state)),
-      savedAt: new Date().toISOString()
+      savedAt: new Date().toISOString(),
+      key: state.key || '',
+      sectionsCount: state.sections.length,
+      isFavorite: existing >= 0 ? charts[existing].isFavorite : false
     };
     if (existing >= 0) {
       charts[existing] = entry;
@@ -317,18 +327,22 @@
     state.title = inputTitle.value.trim();
     state.artist = inputArtist.value.trim();
     state.bpm = inputBpm.value ? parseInt(inputBpm.value) : null;
+    state.timeSignature = inputTimesig.value;
     state.key = inputKey.value;
     state.capo = inputCapo.value;
     state.originalKey = inputOriginalKey.value;
+    state.arrangementNotes = inputNotes.value.trim();
   }
 
   function syncFormFromState() {
     inputTitle.value = state.title || '';
     inputArtist.value = state.artist || '';
     inputBpm.value = state.bpm || '';
+    inputTimesig.value = state.timeSignature || '';
     inputKey.value = state.key || '';
     inputCapo.value = state.capo || '';
     inputOriginalKey.value = state.originalKey || '';
+    inputNotes.value = state.arrangementNotes || '';
     transposeDisplay.textContent = state.key || '—';
   }
 
@@ -518,6 +532,9 @@
       renderEditor();
       renderPreview();
       autoSave();
+      showToast('Section deleted', 'info', () => {
+        undo();
+      });
     });
     deleteBtn.classList.add('delete');
 
@@ -1025,11 +1042,14 @@
       paper.appendChild(artistEl);
     }
 
-    // BPM
-    if (state.bpm) {
+    // BPM & Time Sig
+    if (state.bpm || state.timeSignature) {
+      const parts = [];
+      if (state.bpm) parts.push(`${state.bpm} BPM`);
+      if (state.timeSignature) parts.push(state.timeSignature);
       const bpmEl = document.createElement('div');
       bpmEl.className = 'chart-bpm';
-      bpmEl.textContent = `${state.bpm} BPM`;
+      bpmEl.textContent = parts.join(' • ');
       paper.appendChild(bpmEl);
     }
 
@@ -1058,6 +1078,14 @@
       capoEl.textContent = `Capo - ${state.capo}`;
       capoEl.style.marginBottom = '12px';
       paper.appendChild(capoEl);
+    }
+
+    // Arrangement Notes
+    if (state.arrangementNotes) {
+      const notesEl = document.createElement('div');
+      notesEl.className = 'arrangement-notes';
+      notesEl.textContent = state.arrangementNotes;
+      paper.appendChild(notesEl);
     }
 
     // Sections
@@ -1206,6 +1234,23 @@
 
     autoScaleLines(paper);
     applyZoom();
+
+    // Page Break Indicators
+    paper.querySelectorAll('.page-break-indicator').forEach(el => el.remove());
+    const scale = previewZoom / 100 || 1;
+    const unzoomedWidth = paper.clientWidth / scale;
+    const pageHeight = 792 * (unzoomedWidth / 612);
+    const totalHeight = paper.scrollHeight / scale;
+
+    if (totalHeight > pageHeight) {
+      const numBreaks = Math.floor(totalHeight / pageHeight);
+      for (let i = 1; i <= numBreaks; i++) {
+        const breakLine = document.createElement('div');
+        breakLine.className = 'page-break-indicator';
+        breakLine.style.top = `${i * pageHeight}px`;
+        paper.appendChild(breakLine);
+      }
+    }
   }
 
   // ========================================================================
@@ -1474,9 +1519,12 @@
         y += height;
       }
 
-      // 3. BPM
-      if (state.bpm) {
-        const bpmText = `${state.bpm} BPM`;
+      // 3. BPM & Time Sig
+      if (state.bpm || state.timeSignature) {
+        const parts = [];
+        if (state.bpm) parts.push(`${state.bpm} BPM`);
+        if (state.timeSignature) parts.push(state.timeSignature);
+        const bpmText = parts.join(' • ');
         const size = getScaledFontSize(bpmText, 12);
         const height = size * lineHeightMultiplier;
         checkPageBreak(height);
@@ -1513,6 +1561,19 @@
         pdf.setFontSize(size);
         pdf.setTextColor(0, 0, 0);
         pdf.text(capoText, pageWidth / 2, y + size, { align: 'center' });
+        y += height;
+      }
+
+      // 5.5 Arrangement Notes
+      if (state.arrangementNotes) {
+        const lines = pdf.splitTextToSize(state.arrangementNotes, usableWidth);
+        const size = 13;
+        const height = size * lineHeightMultiplier * lines.length + 8;
+        checkPageBreak(height);
+        pdf.setFont('helvetica', 'italic');
+        pdf.setFontSize(size);
+        pdf.setTextColor(85, 85, 85);
+        pdf.text(lines, pageWidth / 2, y + size, { align: 'center' });
         y += height;
       }
 
@@ -1806,28 +1867,75 @@
   // ========================================================================
 
   function renderSavedCharts() {
-    const charts = getSavedCharts();
-    if (charts.length === 0) {
+    const allCharts = getSavedCharts();
+    if (allCharts.length === 0) {
       savedChartsList.innerHTML = '<span style="font-size:12px; color:var(--text-tertiary);">No saved charts yet.</span>';
       return;
     }
 
+    const searchQuery = ($('library-search')?.value || '').toLowerCase();
+    const sortVal = $('library-sort')?.value || 'date';
+
+    let charts = allCharts.filter(c => c.name.toLowerCase().includes(searchQuery));
+
+    charts.sort((a, b) => {
+      if (a.isFavorite && !b.isFavorite) return -1;
+      if (!a.isFavorite && b.isFavorite) return 1;
+
+      if (sortVal === 'alpha') return a.name.localeCompare(b.name);
+      if (sortVal === 'key') return (a.key || '').localeCompare(b.key || '');
+      return new Date(b.savedAt || 0) - new Date(a.savedAt || 0);
+    });
+
     savedChartsList.innerHTML = '';
-    charts.sort((a, b) => a.name.localeCompare(b.name)).forEach(chart => {
+    
+    if (charts.length === 0) {
+      savedChartsList.innerHTML = '<span style="font-size:12px; color:var(--text-tertiary);">No matches found.</span>';
+      return;
+    }
+
+    charts.forEach(chart => {
       const item = document.createElement('div');
-      item.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--border-subtle); cursor:pointer;';
+      item.className = 'library-item';
       
-      const nameSpan = document.createElement('span');
-      nameSpan.style.cssText = 'font-size:12px; color:var(--text-secondary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;';
-      nameSpan.textContent = chart.name;
-      nameSpan.title = `Load "${chart.name}"`;
-      nameSpan.addEventListener('click', () => loadChartFromLibrary(chart.data.id));
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'library-item-content';
+      contentDiv.addEventListener('click', () => loadChartFromLibrary(chart.data.id));
+
+      const titleEl = document.createElement('div');
+      titleEl.className = 'library-item-title';
+      titleEl.textContent = chart.name;
+
+      const metaEl = document.createElement('div');
+      metaEl.className = 'library-item-meta';
+      const keyStr = chart.key ? `Key: ${chart.key}` : '';
+      const dateStr = chart.savedAt ? new Date(chart.savedAt).toLocaleDateString() : '';
+      const parts = [keyStr, `${chart.sectionsCount || 0} sections`, dateStr].filter(Boolean);
+      metaEl.textContent = parts.join(' • ');
+
+      contentDiv.appendChild(titleEl);
+      contentDiv.appendChild(metaEl);
+
+      const actionsDiv = document.createElement('div');
+      actionsDiv.style.cssText = 'display:flex; align-items:center; gap:4px;';
+
+      const favBtn = document.createElement('button');
+      favBtn.className = `favorite-btn ${chart.isFavorite ? 'favorited' : ''}`;
+      favBtn.innerHTML = chart.isFavorite ? '★' : '☆';
+      favBtn.title = chart.isFavorite ? 'Remove from favorites' : 'Add to favorites';
+      favBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        chart.isFavorite = !chart.isFavorite;
+        const allIdx = allCharts.findIndex(c => c.data.id === chart.data.id);
+        if (allIdx >= 0) allCharts[allIdx].isFavorite = chart.isFavorite;
+        localStorage.setItem(STORAGE_CHARTS_KEY, JSON.stringify(allCharts));
+        renderSavedCharts();
+      });
 
       const delBtn = document.createElement('button');
       delBtn.className = 'line-action-btn delete';
       delBtn.textContent = '×';
       delBtn.title = `Delete "${chart.name}"`;
-      delBtn.style.opacity = '0.5';
       delBtn.addEventListener('click', e => {
         e.stopPropagation();
         if (confirm(`Delete "${chart.name}"?`)) {
@@ -1835,8 +1943,11 @@
         }
       });
 
-      item.appendChild(nameSpan);
-      item.appendChild(delBtn);
+      actionsDiv.appendChild(favBtn);
+      actionsDiv.appendChild(delBtn);
+
+      item.appendChild(contentDiv);
+      item.appendChild(actionsDiv);
       savedChartsList.appendChild(item);
     });
   }
@@ -1845,16 +1956,32 @@
   // TOAST NOTIFICATIONS
   // ========================================================================
 
-  function showToast(message, type = 'info') {
+  function showToast(message, type = 'info', actionFn = null) {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.textContent = message;
+    
+    if (actionFn) {
+      const btn = document.createElement('button');
+      btn.textContent = 'Undo';
+      btn.style.cssText = 'background:none; border:none; color:inherit; text-decoration:underline; cursor:pointer; margin-left:12px; font-weight:bold; font-size:12px;';
+      btn.addEventListener('click', () => {
+        actionFn();
+        if (toast.parentNode) toast.remove();
+      });
+      toast.appendChild(btn);
+    }
+
     toastContainer.appendChild(toast);
 
     setTimeout(() => {
-      toast.classList.add('fadeout');
-      setTimeout(() => toast.remove(), 300);
-    }, 2500);
+      if (toast.parentNode) {
+        toast.classList.add('fadeout');
+        setTimeout(() => {
+          if (toast.parentNode) toast.remove();
+        }, 300);
+      }
+    }, actionFn ? 4000 : 2500);
   }
 
   // ========================================================================
@@ -1929,7 +2056,8 @@
 
   function bindEvents() {
     // Metadata inputs — pushUndo on focus for text undo granularity
-    [inputTitle, inputArtist, inputBpm, inputKey, inputCapo, inputOriginalKey].forEach(input => {
+    [inputTitle, inputArtist, inputBpm, inputTimesig, inputKey, inputCapo, inputOriginalKey, inputNotes].forEach(input => {
+      if (!input) return;
       input.addEventListener('focus', () => snapshotTextEdit());
       input.addEventListener('blur', () => commitTextEdit());
       input.addEventListener('input', () => {
@@ -2080,6 +2208,40 @@
     const batchClearBtn = $('batch-clear');
     if (batchClearBtn) batchClearBtn.addEventListener('click', clearSelection);
 
+    // Shortcuts Modal
+    const shortcutsBtn = $('btn-shortcuts');
+    const shortcutsModal = $('shortcuts-modal');
+    const shortcutsClose = $('btn-shortcuts-close');
+    if (shortcutsBtn && shortcutsModal) {
+      shortcutsBtn.addEventListener('click', () => {
+        shortcutsModal.style.display = 'flex';
+      });
+      shortcutsClose.addEventListener('click', () => {
+        shortcutsModal.style.display = 'none';
+      });
+      shortcutsModal.addEventListener('click', e => {
+        if (e.target === shortcutsModal) shortcutsModal.style.display = 'none';
+      });
+    }
+
+    // Dark Mode Toggle
+    const darkModeBtn = $('btn-dark-mode');
+    if (darkModeBtn) {
+      darkModeBtn.addEventListener('click', () => {
+        chartPaper.classList.toggle('dark-mode');
+      });
+    }
+
+    // Library Enhancements
+    const librarySearch = $('library-search');
+    const librarySort = $('library-sort');
+    if (librarySearch) {
+      librarySearch.addEventListener('input', renderSavedCharts);
+    }
+    if (librarySort) {
+      librarySort.addEventListener('change', renderSavedCharts);
+    }
+
     // Keyboard shortcuts
     document.addEventListener('keydown', e => {
       // Undo
@@ -2110,8 +2272,16 @@
       }
       if (e.key === 'Escape') {
         importModal.style.display = 'none';
+        const sm = $('shortcuts-modal');
+        if (sm) sm.style.display = 'none';
         closeSearchReplace();
         clearSelection();
+      }
+      if (e.key === '?') {
+        if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+          const sm = $('shortcuts-modal');
+          if (sm) sm.style.display = 'flex';
+        }
       }
     });
   }

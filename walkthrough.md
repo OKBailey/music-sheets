@@ -71,3 +71,14 @@ Matches your existing PDFs precisely:
   - **Removed `max-height: 400px` limitation** on `.section-card-body` to allow section cards to grow naturally to fit their contents. This eliminates internal card scrollbars by default, preventing the mouse wheel from getting trapped inside individual cards, thus restoring smooth outer scrolling for the entire Sections pane.
   - **Optimized CSS transitions**: Swapped `transition: all` to specifically transition only `border-color`, `box-shadow`, `transform`, and `opacity` on `.section-card`. This stops the layout transitions from fighting with manual resizing, fixing resize-handle lag and rubber-banding.
   - **Debounced auto-save**: General `autoSave()` calls are now debounced by 500ms. This prevents the browser from making hundreds of blocking, synchronous localStorage writes per second during card resizing (ResizeObserver callbacks) and typing.
+
+## Tier 2 Polish & Audit Fixes (May 2026)
+Successfully implemented all 7 Tier 2 UX and Design Polish features, along with post-audit fixes to guarantee rock-solid behavior:
+- **Preview Page Break Indicators**: Shows dashed visual break lines at exact Letter-size page boundaries (792pt equivalent), fully calibrated for `previewZoom` scaling.
+- **Keyboard Shortcut Modal & ? Key**: Surface shortcuts modal via toolbar button or `?` shortcut key.
+- **Time Signature Field**: Integrated Time Sig metadata selector. Empty selections remain hidden.
+- **Arrangement Notes Field**: Multiline free-text notepad rendered beautifully on the chart paper preview and exported PDFs.
+- **Dark Mode Preview Toggle**: Inverts the preview paper using the fixed `.chart-paper.dark-mode` selector.
+- **Improved Saved Charts Library**: Rebuilt library panel with key and section count metadata, alphabetical/key/date sorting, search filtering, and favorites/pinning. Legacy entries without unique IDs are automatically matched and migrated by name without duplication.
+- **Confirmation & Undo Toast**: Integrated `confirm()` dialogs on library deletions and multi-select batch deletions. Deleting a single section triggers an interactive Undo Toast message to easily revert accidents.
+- **macOS Desktop Launcher & Icon Update**: Compiled custom macOS icons to `.icns` inside the app bundle and refreshed Finder cache. Repaired the AppleScript launcher's PATH environment to correctly locate and execute Homebrew-installed python3 servers.
