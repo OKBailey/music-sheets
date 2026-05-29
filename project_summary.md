@@ -120,10 +120,17 @@ The preview and PDF sheets use a strict set of hex colors:
 
 ---
 
-## 🚀 Desktop Workflow Launcher
+## 🚀 macOS Application Options
 
-To run the application locally without needing to touch the Terminal, a native macOS application was compiled on your Desktop:
+We have two options for launching the app on macOS:
 
+### 1. Standalone Native App (Tauri)
+* **App Path**: **[chart-creator.app](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/src-tauri/target/release/bundle/macos/chart-creator.app)**
+* **Installer Path**: **[chart-creator_0.1.0_aarch64.dmg](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/src-tauri/target/release/bundle/dmg/chart-creator_0.1.0_aarch64.dmg)**
+* **Behavior**: Runs completely standalone as a native desktop client with all assets compiled inside the app. It does not require any external terminal commands or local Python server processes.
+* **Commands**: Run `npx tauri dev` to run in development mode or `npx tauri build` to recompile.
+
+### 2. Browser Desktop Helper (Python Web Server Launcher)
 * **App Link**: **[Chart Creator.app](file:///Users/randymitchell/Desktop/Chart%20Creator.app)**
 * **Launcher Behavior**:
   1. Checks if a process is listening on port `8080` (e.g. `lsof -i :8080`).
