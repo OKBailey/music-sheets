@@ -1732,7 +1732,7 @@ body {
   left: 0;
   right: 0;
   height: 0;
-  border-top: 1px dashed rgba(200, 200, 200, 0.8);
+  border-top: 1px dashed var(--border-default);
   pointer-events: none;
   z-index: 10;
 }
@@ -1794,11 +1794,11 @@ body {
 .arrangement-notes {
   margin: var(--space-md) 0;
   padding: var(--space-sm) var(--space-md);
-  background: rgba(0, 0, 0, 0.02);
-  border-left: 3px solid #ccc;
+  background: var(--bg-surface);
+  border-left: 3px solid var(--border-default);
   font-size: 13px;
   font-style: italic;
-  color: #555;
+  color: var(--text-secondary);
   white-space: pre-wrap;
 }
 
@@ -1813,4 +1813,21 @@ body {
   padding: 4px 0 4px 8px;
   color: var(--text-secondary);
   border-bottom: 1px solid var(--border-subtle);
+}
+
+.library-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toast-action-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 12px;
+  font-weight: bold;
+  font-size: 12px;
 }

@@ -10,11 +10,11 @@
   // ========================================================================
 
   const NOTES_SHARP = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-  const NOTES_FLAT  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+  const NOTES_FLAT = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
   // Keys that conventionally use flats
   const FLAT_KEYS = new Set(['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb',
-                             'Dm', 'Gm', 'Cm', 'Fm', 'Bbm', 'Ebm']);
+    'Dm', 'Gm', 'Cm', 'Fm', 'Bbm', 'Ebm']);
 
   function noteIndex(note) {
     let idx = NOTES_SHARP.indexOf(note);
@@ -257,7 +257,7 @@
     if (!state.id) state.id = generateId();
     const name = state.title || 'Untitled Chart';
     const charts = getSavedCharts();
-    const existing = charts.findIndex(c => 
+    const existing = charts.findIndex(c =>
       (c.data.id && c.data.id === state.id) ||
       (!c.data.id && c.name === name)
     );
@@ -1156,7 +1156,7 @@
           sectionEl.appendChild(chordEl);
         } else if (line.type === 'lyric') {
           const lyricEl = document.createElement('div');
-          
+
           // For verse type: first lyric with content is bold + has verse number prefix
           if (section.type === 'verse' && firstLyricInVerse && line.content) {
             lyricEl.className = 'chart-lyric-bold';
@@ -1239,7 +1239,8 @@
     paper.querySelectorAll('.page-break-indicator').forEach(el => el.remove());
     const scale = previewZoom / 100 || 1;
     const unzoomedWidth = paper.clientWidth / scale;
-    const pageHeight = 792 * (unzoomedWidth / 612);
+    const paddingV = parseFloat(getComputedStyle(paper).paddingTop) + parseFloat(getComputedStyle(paper).paddingBottom) || 48;
+    const pageHeight = (792 / 612) * (unzoomedWidth - paddingV);
     const totalHeight = paper.scrollHeight / scale;
 
     if (totalHeight > pageHeight) {
@@ -1372,7 +1373,7 @@
       }
     }
 
-  // Post-process: combine consecutive chord+lyric pairs into grid lines
+    // Post-process: combine consecutive chord+lyric pairs into grid lines
     sections.forEach(section => {
       const merged = [];
       for (let i = 0; i < section.lines.length; i++) {
@@ -1407,11 +1408,11 @@
       }
 
       // Letter size: 612 × 792 points
-      const pageWidth  = 612;
+      const pageWidth = 612;
       const pageHeight = 792;
-      const marginX    = 40;
-      const marginY    = 24;
-      const usableWidth  = pageWidth - marginX * 2; // 532
+      const marginX = 40;
+      const marginY = 24;
+      const usableWidth = pageWidth - marginX * 2; // 532
       const pageNumAreaHeight = 20;
       const usableHeight = pageHeight - marginY - pageNumAreaHeight; // 748
 
@@ -1670,7 +1671,7 @@
           } else if (line.type === 'lyric') {
             const isVerseFirst = section.type === 'verse' && firstLyricInVerse && line.content;
             const boldVal = line.bold || isVerseFirst;
-            
+
             let fullText = line.content;
             let vNumText = '';
             let vNumColor = '#cc1800';
@@ -1888,7 +1889,7 @@
     });
 
     savedChartsList.innerHTML = '';
-    
+
     if (charts.length === 0) {
       savedChartsList.innerHTML = '<span style="font-size:12px; color:var(--text-tertiary);">No matches found.</span>';
       return;
@@ -1897,7 +1898,7 @@
     charts.forEach(chart => {
       const item = document.createElement('div');
       item.className = 'library-item';
-      
+
       const contentDiv = document.createElement('div');
       contentDiv.className = 'library-item-content';
       contentDiv.addEventListener('click', () => loadChartFromLibrary(chart.data.id));
@@ -1917,11 +1918,11 @@
       contentDiv.appendChild(metaEl);
 
       const actionsDiv = document.createElement('div');
-      actionsDiv.style.cssText = 'display:flex; align-items:center; gap:4px;';
+      actionsDiv.className = 'library-item-actions';
 
       const favBtn = document.createElement('button');
       favBtn.className = `favorite-btn ${chart.isFavorite ? 'favorited' : ''}`;
-      favBtn.innerHTML = chart.isFavorite ? '★' : '☆';
+      favBtn.textContent = chart.isFavorite ? '★' : '☆';
       favBtn.title = chart.isFavorite ? 'Remove from favorites' : 'Add to favorites';
       favBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -1960,11 +1961,11 @@
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.textContent = message;
-    
+
     if (actionFn) {
       const btn = document.createElement('button');
       btn.textContent = 'Undo';
-      btn.style.cssText = 'background:none; border:none; color:inherit; text-decoration:underline; cursor:pointer; margin-left:12px; font-weight:bold; font-size:12px;';
+      btn.className = 'toast-action-btn';
       btn.addEventListener('click', () => {
         actionFn();
         if (toast.parentNode) toast.remove();
@@ -1994,7 +1995,7 @@
    */
   function autoScaleLines(paper) {
     const style = getComputedStyle(paper);
-    const padLeft  = parseFloat(style.paddingLeft) || 0;
+    const padLeft = parseFloat(style.paddingLeft) || 0;
     const padRight = parseFloat(style.paddingRight) || 0;
     const availableWidth = paper.clientWidth - padLeft - padRight;
     if (availableWidth <= 0) return;
@@ -2331,7 +2332,7 @@
     if (loaded) {
       syncFormFromState();
     }
-    
+
     bindEvents();
     renderEditor();
     renderPreview();
@@ -2367,9 +2368,9 @@
     push(state) {
       if (this._isUndoRedo) return;
       this.commitTextEdit();
-      
+
       const clone = JSON.parse(JSON.stringify(state));
-      
+
       // If stack is empty, push this as the initial state
       if (this.index === -1) {
         this.stack = [clone];
@@ -2673,8 +2674,8 @@
       else { re = new RegExp(findText.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&'), caseSensitive ? 'g' : 'gi'); }
     } catch (e) { showToast('Invalid search pattern', 'error'); return 0; }
     var count = 0;
-    state.sections.forEach(function(section) {
-      section.lines.forEach(function(line) {
+    state.sections.forEach(function (section) {
+      section.lines.forEach(function (line) {
         if (line.type === 'chord' || line.type === 'lyric' || line.type === 'instruction') {
           var m = line.content.match(re); if (m) { count += m.length; line.content = line.content.replace(re, replaceText); }
         }
@@ -2696,12 +2697,12 @@
   let lastSelectedSectionId = null;
 
   const SECTION_TEMPLATES = [
-    { name: 'Empty (default)', lines: function() { return [createLine('chord'), createLine('lyric')]; } },
-    { name: 'Verse \u2014 4 bar', lines: function() { var arr = []; for (var i = 0; i < 4; i++) { var l = createLine('grid'); l.chords = ''; arr.push(l); } return arr; } },
-    { name: 'Chorus \u2014 8 bar', lines: function() { var arr = []; for (var i = 0; i < 8; i++) { var l = createLine('grid'); l.chords = ''; arr.push(l); } return arr; } },
-    { name: 'Bridge \u2014 4 bar', lines: function() { var arr = []; for (var i = 0; i < 4; i++) { var l = createLine('grid'); l.chords = ''; arr.push(l); } return arr; } },
-    { name: 'Intro / Outro \u2014 chords only', lines: function() { return [createLine('chord'), createLine('chord'), createLine('chord'), createLine('chord')]; } },
-    { name: 'Instrumental \u2014 8 bar chords', lines: function() { var arr = []; for (var i = 0; i < 8; i++) arr.push(createLine('chord')); return arr; } }
+    { name: 'Empty (default)', lines: function () { return [createLine('chord'), createLine('lyric')]; } },
+    { name: 'Verse \u2014 4 bar', lines: function () { var arr = []; for (var i = 0; i < 4; i++) { var l = createLine('grid'); l.chords = ''; arr.push(l); } return arr; } },
+    { name: 'Chorus \u2014 8 bar', lines: function () { var arr = []; for (var i = 0; i < 8; i++) { var l = createLine('grid'); l.chords = ''; arr.push(l); } return arr; } },
+    { name: 'Bridge \u2014 4 bar', lines: function () { var arr = []; for (var i = 0; i < 4; i++) { var l = createLine('grid'); l.chords = ''; arr.push(l); } return arr; } },
+    { name: 'Intro / Outro \u2014 chords only', lines: function () { return [createLine('chord'), createLine('chord'), createLine('chord'), createLine('chord')]; } },
+    { name: 'Instrumental \u2014 8 bar chords', lines: function () { var arr = []; for (var i = 0; i < 8; i++) arr.push(createLine('chord')); return arr; } }
   ];
 
 })();
