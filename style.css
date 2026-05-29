@@ -1489,9 +1489,6 @@ body {
   display: none;
 }
 
-.section-card-body.collapsed+.section-card-body {
-  /* fallback */
-}
 
 .section-card.collapsed .section-card-header {
   border-bottom: none;
