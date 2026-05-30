@@ -14,7 +14,7 @@
   <!-- ===== TOOLBAR ===== -->
   <header class="toolbar" id="toolbar">
     <div class="toolbar-brand">
-      <div class="toolbar-brand-icon"><img src="./icon.png" alt="Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-sm);"></div>
+      <div class="toolbar-brand-icon"><img src="./icon.png" alt="Icon" class="toolbar-brand-img"></div>
       <span class="toolbar-brand-text">Chart Creator</span>
     </div>
     <div class="toolbar-actions">
@@ -150,7 +150,7 @@
 
       <!-- Transpose Controls -->
       <div class="sidebar-section">
-        <div class="sidebar-header" style="padding: 0 0 var(--space-md) 0; border: none;">Transpose</div>
+        <div class="sidebar-header sidebar-header-compact">Transpose</div>
         <div class="transpose-bar">
           <button class="transpose-btn" id="btn-transpose-down" title="Transpose down one semitone">−</button>
           <span class="transpose-key" id="transpose-display">—</span>
@@ -160,22 +160,22 @@
 
       <!-- Arrangement Notes -->
       <div class="sidebar-section">
-        <div class="sidebar-header" style="padding: 0 0 var(--space-md) 0; border: none;">Notes</div>
-        <textarea id="input-notes" class="form-input" placeholder="Band cues, setlist notes..." rows="3" style="resize: vertical;"></textarea>
+        <div class="sidebar-header sidebar-header-compact">Notes</div>
+        <textarea id="input-notes" class="form-input input-notes" placeholder="Band cues, setlist notes..." rows="3"></textarea>
       </div>
 
       <!-- Saved Charts -->
-      <div class="sidebar-section" style="flex: 1; display: flex; flex-direction: column;">
-        <div class="sidebar-header" style="padding: 0 0 var(--space-md) 0; border: none;">Saved Charts</div>
-        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-          <input type="text" id="library-search" class="form-input" placeholder="Search..." style="flex: 1; font-size: 11px; padding: 4px 8px;">
-          <select id="library-sort" class="form-select" style="width: auto; font-size: 11px; padding: 4px 8px;">
+      <div class="sidebar-section sidebar-section-flex">
+        <div class="sidebar-header sidebar-header-compact">Saved Charts</div>
+        <div class="library-search-row">
+          <input type="text" id="library-search" class="form-input library-search-input" placeholder="Search...">
+          <select id="library-sort" class="form-select library-sort-select">
             <option value="date">Newest</option>
             <option value="alpha">A-Z</option>
             <option value="key">Key</option>
           </select>
         </div>
-        <div id="saved-charts-list" style="font-size: 12px; color: var(--text-tertiary); overflow-y: auto; flex: 1;">
+        <div id="saved-charts-list" class="saved-charts-list">
           No saved charts yet.
         </div>
       </div>
@@ -185,13 +185,13 @@
     <section class="editor-panel" id="editor-panel">
       <div class="editor-toolbar">
         <div class="editor-toolbar-left">
-          <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary);">Sections</span>
+          <span class="editor-toolbar-title">Sections</span>
         </div>
         <div class="editor-toolbar-left">
           <button class="btn btn-sm" id="btn-add-section-top" title="Add section">
             <span>+</span> Add Section
           </button>
-          <select class="form-select" id="template-select" title="Section template" style="width:150px; padding:4px 8px; font-size:11px;"></select>
+          <select class="form-select template-select" id="template-select" title="Section template"></select>
           <button class="btn btn-sm" id="btn-import-text" title="Import from pasted text">
             <span>📋</span> Import Text
           </button>
@@ -241,10 +241,10 @@
     <aside class="preview-panel" id="preview-panel">
       <div class="preview-header">
         <span class="preview-header-title">Preview</span>
-        <div style="display: flex; gap: var(--space-sm);">
+        <div class="preview-header-controls">
           <button class="btn btn-sm btn-ghost" id="btn-dark-mode" title="Toggle Dark Mode">🌙</button>
           <button class="btn btn-sm btn-ghost" id="btn-zoom-out" title="Zoom out">−</button>
-          <span id="zoom-level" style="font-size: 11px; color: var(--text-tertiary); min-width: 36px; text-align: center; line-height: 28px;">100%</span>
+          <span id="zoom-level" class="zoom-level-text">60%</span>
           <button class="btn btn-sm btn-ghost" id="btn-zoom-in" title="Zoom in">+</button>
         </div>
       </div>
@@ -279,7 +279,7 @@
 <div class="toast-container" id="toast-container"></div>
 
 <!-- Hidden file input for JSON import -->
-<input type="file" id="file-input-json" accept=".json" style="display: none;">
+<input type="file" id="file-input-json" accept=".json" class="hidden">
 
 <!-- Import Text Modal -->
 <div id="import-modal" class="modal-overlay">
@@ -299,9 +299,9 @@
 
 <!-- Shortcuts Modal -->
 <div id="shortcuts-modal" class="modal-overlay">
-  <div class="modal-content" style="max-width: 400px;">
+  <div class="modal-content modal-content-sm">
     <h3 class="modal-title">Keyboard Shortcuts</h3>
-    <table class="shortcuts-table" style="width: 100%; text-align: left; font-size: 13px; line-height: 1.8;">
+    <table class="shortcuts-table">
       <tr><th><code>Cmd/Ctrl + Z</code></th><td>Undo</td></tr>
       <tr><th><code>Cmd/Ctrl + Shift + Z</code></th><td>Redo</td></tr>
       <tr><th><code>Cmd/Ctrl + H</code></th><td>Find & Replace</td></tr>
@@ -310,16 +310,35 @@
       <tr><th><code>Cmd/Ctrl + Click</code></th><td>Select Multiple Sections</td></tr>
       <tr><th><code>?</code></th><td>Show this cheat sheet</td></tr>
     </table>
-    <div class="modal-footer" style="margin-top: 24px;">
+    <div class="modal-footer shortcuts-footer">
       <button class="btn btn-primary" id="btn-shortcuts-close">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Confirm Dialog (replaces native confirm() blocked by Tauri) -->
+<div id="confirm-modal" class="modal-overlay modal-overlay-top">
+  <div class="modal-content modal-content-sm">
+    <p id="confirm-message" class="confirm-message-text"></p>
+    <div class="modal-footer">
+      <button class="btn" id="confirm-cancel">Cancel</button>
+      <button class="btn btn-danger" id="confirm-ok">OK</button>
     </div>
   </div>
 </div>
 
 <!-- jsPDF + html2canvas from CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
-
-<script src="app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="./src-js/transpose.js"></script>
+<script src="./src-js/constants.js"></script>
+<script src="./src-js/state.js"></script>
+<script src="./src-js/undo.js"></script>
+<script src="./src-js/storage.js"></script>
+<script src="./src-js/preview.js"></script>
+<script src="./src-js/editor.js"></script>
+<script src="./src-js/import-export.js"></script>
+<script src="./src-js/ui.js"></script>
+<script src="./app.js"></script>
 </body>
 </html>

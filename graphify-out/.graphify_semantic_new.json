@@ -1,0 +1,935 @@
+{
+  "nodes": [
+    {
+      "id": "app_transposeengine",
+      "label": "Transpose Engine",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L33-L67",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_undomanager",
+      "label": "UndoManager",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L2478-L2598",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_exportpdf",
+      "label": "exportPDF",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L1488-L1906",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_renderpreview",
+      "label": "renderPreview",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L1113-L1343",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_rendereditor",
+      "label": "renderEditor",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L441-L459",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_parseimporttext",
+      "label": "parseImportText",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L1391-L1482",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_searchandreplace",
+      "label": "searchAndReplace",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L2786-L2809",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_autosave",
+      "label": "autoSave",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L280-L302",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_normalizestate",
+      "label": "normalizeState",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L165-L213",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_autoscalelines",
+      "label": "autoScaleLines",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L2103-L2136",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_state",
+      "label": "State Object",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L131-L132",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_section_templates",
+      "label": "SECTION_TEMPLATES",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L141-L148",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "lib_run",
+      "label": "run",
+      "file_type": "code",
+      "source_file": "src-tauri/src/lib.rs",
+      "source_location": "L2-L16",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "main_main",
+      "label": "main (Tauri)",
+      "file_type": "code",
+      "source_file": "src-tauri/src/main.rs",
+      "source_location": "L4-L6",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "buildrs_main",
+      "label": "build.rs main",
+      "file_type": "code",
+      "source_file": "src-tauri/build.rs",
+      "source_location": "L1-L3",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projectsummary_three_panel_dashboard",
+      "label": "Three-Panel Dashboard",
+      "file_type": "document",
+      "source_file": "project_summary.md",
+      "source_location": "LL22-L26",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projectsummary_transpose",
+      "label": "Smart Transposition Engine",
+      "file_type": "document",
+      "source_file": "project_summary.md",
+      "source_location": "LL27-L30",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projectsummary_undo_redo",
+      "label": "Undo / Redo",
+      "file_type": "document",
+      "source_file": "project_summary.md",
+      "source_location": "LL41-L43",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projectsummary_color_coding",
+      "label": "Color-Coding System",
+      "file_type": "document",
+      "source_file": "project_summary.md",
+      "source_location": "LL71-L89",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projectsummary_pdf_layout",
+      "label": "PDF Margin and Page Layout Rules",
+      "file_type": "document",
+      "source_file": "project_summary.md",
+      "source_location": "LL91-L96",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "projectsummary_tauri",
+      "label": "Tauri Standalone Native App",
+      "file_type": "document",
+      "source_file": "project_summary.md",
+      "source_location": "LL127-L131",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "featuresuggestions_setlist_mode",
+      "label": "Setlist Mode",
+      "file_type": "document",
+      "source_file": "feature_suggestions.md",
+      "source_location": "L75-L80",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "featuresuggestions_nashville_numbers",
+      "label": "Nashville Number System Toggle",
+      "file_type": "document",
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL81-L84",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "featuresuggestions_autoscroll_teleprompter",
+      "label": "Auto-Scroll / Teleprompter Mode",
+      "file_type": "document",
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL94-L96",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "codereview_transpose_regex_bug",
+      "label": "Transpose Regex Bug - Critical Issue #1",
+      "file_type": "document",
+      "source_file": "code-review-2026-05-29.md",
+      "source_location": "LL25-L40",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "codereview_quota_exceeded",
+      "label": "Silent localStorage Quota Failures",
+      "file_type": "document",
+      "source_file": "code-review-2026-05-29.md",
+      "source_location": "LL49-L52",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "tier2audit_dark_mode_bug",
+      "label": "Dark Mode CSS Selector Bug",
+      "file_type": "document",
+      "source_file": "tier2-audit-2026-05-29.md",
+      "source_location": "LL129-L141",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "tier2audit_page_break_bug",
+      "label": "Page Break Indicator Positioning Bug",
+      "file_type": "document",
+      "source_file": "tier2-audit-2026-05-29.md",
+      "source_location": "LL35-L52",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "implementationplan_change_set_split",
+      "label": "Two Change Set Split Strategy",
+      "file_type": "rationale",
+      "source_file": "implementation_plan.md",
+      "source_location": "LL7-L16",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "implementationplan_line_drag_risk",
+      "label": "Line Drag-and-Drop Implementation Risk",
+      "file_type": "rationale",
+      "source_file": "implementation_plan.md",
+      "source_location": "LL104-L106",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "walkthrough_normalizestate_fix",
+      "label": "State Normalization and Startup Crash Fix",
+      "file_type": "document",
+      "source_file": "walkthrough.md",
+      "source_location": "L85",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "app_batcheventlisteners",
+      "label": "Batch Action Event Listeners",
+      "file_type": "code",
+      "source_file": "app.js",
+      "source_location": "L2317-L2328",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "featuresuggestions_tier1",
+      "label": "Tier 1 High-Impact Workflow Features",
+      "file_type": "document",
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL3-L35",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "featuresuggestions_tier2",
+      "label": "Tier 2 UX & Design Polish",
+      "file_type": "document",
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL38-L70",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "featuresuggestions_tier3",
+      "label": "Tier 3 Ambitious / Stretch Features",
+      "file_type": "document",
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL73-L102",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "codereview_multi_select_shift_broken",
+      "label": "Shift-click Range Select is Broken",
+      "file_type": "document",
+      "source_file": "code-review-2026-05-29.md",
+      "source_location": "L72",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "music_sheets_app_icon",
+      "label": "App Icon - Dark Navy Background with Vibrant Spectrum Gradient Ribbon",
+      "file_type": "image",
+      "source_file": "icon.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "music_sheets_icon_spectrum_ribbon",
+      "label": "Spectrum Gradient Ribbon Design Motif (blue-cyan-yellow-orange-pink-magenta-purple)",
+      "file_type": "image",
+      "source_file": "icon.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "tauri_icon_platform_variants",
+      "label": "Tauri Platform Icon Variants (iOS & Android)",
+      "file_type": "image",
+      "source_file": "src-tauri/icons/ios/AppIcon-60x60@2x.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "tauri_icon_color_palette",
+      "label": "App Icon Color Palette \u2014 deep navy/indigo blues, rich purples/magentas, lavender-gray highlights",
+      "file_type": "image",
+      "source_file": "src-tauri/icons/icon.png",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "app_transposeengine",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "app.js",
+      "source_location": "L1349-L1384",
+      "weight": 1.0
+    },
+    {
+      "source": "app_undomanager",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L2601-L2606",
+      "weight": 1.0
+    },
+    {
+      "source": "app_exportpdf",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L1587-L1883",
+      "weight": 1.0
+    },
+    {
+      "source": "app_renderpreview",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L1113-L1115",
+      "weight": 1.0
+    },
+    {
+      "source": "app_rendereditor",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L446-L457",
+      "weight": 1.0
+    },
+    {
+      "source": "app_autosave",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L286",
+      "weight": 1.0
+    },
+    {
+      "source": "app_parseimporttext",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L2272-L2273",
+      "weight": 1.0
+    },
+    {
+      "source": "app_searchandreplace",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L2797-L2807",
+      "weight": 1.0
+    },
+    {
+      "source": "app_normalizestate",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L310",
+      "weight": 1.0
+    },
+    {
+      "source": "app_autoscalelines",
+      "target": "app_renderpreview",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L1323",
+      "weight": 1.0
+    },
+    {
+      "source": "app_exportpdf",
+      "target": "app_transposeengine",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": null,
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "app_exportpdf",
+      "target": "projectsummary_pdf_layout",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L1498-L1510",
+      "weight": 1.0
+    },
+    {
+      "source": "projectsummary_transpose",
+      "target": "app_transposeengine",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "project_summary.md",
+      "source_location": "L27-L31",
+      "weight": 1.0
+    },
+    {
+      "source": "projectsummary_undo_redo",
+      "target": "app_undomanager",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "project_summary.md",
+      "source_location": "L41-L43",
+      "weight": 1.0
+    },
+    {
+      "source": "projectsummary_three_panel_dashboard",
+      "target": "app_renderpreview",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "project_summary.md",
+      "source_location": "L22-L26",
+      "weight": 1.0
+    },
+    {
+      "source": "projectsummary_color_coding",
+      "target": "app_exportpdf",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "project_summary.md",
+      "source_location": "L71-L89",
+      "weight": 1.0
+    },
+    {
+      "source": "projectsummary_color_coding",
+      "target": "app_renderpreview",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "project_summary.md",
+      "source_location": "L65-L70",
+      "weight": 1.0
+    },
+    {
+      "source": "projectsummary_tauri",
+      "target": "lib_run",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "project_summary.md",
+      "source_location": "LL127-L131",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_run",
+      "target": "main_main",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src-tauri/src/main.rs",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "codereview_transpose_regex_bug",
+      "target": "app_transposeengine",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "code-review-2026-05-29.md",
+      "source_location": "L27-L28",
+      "weight": 1.0
+    },
+    {
+      "source": "tier2audit_dark_mode_bug",
+      "target": "app_renderpreview",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tier2-audit-2026-05-29.md",
+      "source_location": "LL129-L141",
+      "weight": 1.0
+    },
+    {
+      "source": "tier2audit_page_break_bug",
+      "target": "app_renderpreview",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tier2-audit-2026-05-29.md",
+      "source_location": "LL35-L52",
+      "weight": 1.0
+    },
+    {
+      "source": "app_section_templates",
+      "target": "app_rendereditor",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L2194-L2199",
+      "weight": 1.0
+    },
+    {
+      "source": "implementationplan_change_set_split",
+      "target": "featuresuggestions_tier1",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "implementation_plan.md",
+      "source_location": "LL7-L16",
+      "weight": 1.0
+    },
+    {
+      "source": "implementationplan_line_drag_risk",
+      "target": "app_rendereditor",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "implementation_plan.md",
+      "source_location": "LL104-L106",
+      "weight": 1.0
+    },
+    {
+      "source": "walkthrough_normalizestate_fix",
+      "target": "app_normalizestate",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "walkthrough.md",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "codereview_quota_exceeded",
+      "target": "app_autosave",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "code-review-2026-05-29.md",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "featuresuggestions_tier1",
+      "target": "app_undomanager",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL5-L8",
+      "weight": 1.0
+    },
+    {
+      "source": "featuresuggestions_tier1",
+      "target": "app_searchandreplace",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL32-L34",
+      "weight": 1.0
+    },
+    {
+      "source": "featuresuggestions_tier2",
+      "target": "app_renderpreview",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL40-L43",
+      "weight": 1.0
+    },
+    {
+      "source": "app_transposeengine",
+      "target": "projectsummary_undo_redo",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": null,
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "app_searchandreplace",
+      "target": "app_parseimporttext",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": null,
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "app_autosave",
+      "target": "app_normalizestate",
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "app.js",
+      "source_location": "L310",
+      "weight": 1.0
+    },
+    {
+      "source": "featuresuggestions_tier3",
+      "target": "featuresuggestions_setlist_mode",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "feature_suggestions.md",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "featuresuggestions_setlist_mode",
+      "target": "app_exportpdf",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "feature_suggestions.md",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "app_batcheventlisteners",
+      "target": "app_state",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js",
+      "source_location": "L2698-L2756",
+      "weight": 1.0
+    },
+    {
+      "source": "codereview_multi_select_shift_broken",
+      "target": "app_state",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "code-review-2026-05-29.md",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "featuresuggestions_nashville_numbers",
+      "target": "app_transposeengine",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": "feature_suggestions.md",
+      "source_location": "LL81-L84",
+      "weight": 1.0
+    },
+    {
+      "source": "music_sheets_app_icon",
+      "target": "music_sheets_app",
+      "relation": "branding",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src-tauri/tauri.conf.json",
+      "source_location": "bundle.icon",
+      "weight": 1.0
+    },
+    {
+      "source": "music_sheets_app_icon",
+      "target": "music_sheets_icon_spectrum_ribbon",
+      "relation": "contains",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "icon.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "tauri_icon_platform_variants",
+      "target": "projectsummary_tauri",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src-tauri/tauri.conf.json",
+      "source_location": "bundle.icon",
+      "weight": 1.0
+    },
+    {
+      "source": "tauri_icon_color_palette",
+      "target": "tauri_icon_platform_variants",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "src-tauri/icons/icon.png",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "tauri_icon_platform_variants",
+      "target": "main_main",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "src-tauri/tauri.conf.json",
+      "source_location": "app.windows[0].title",
+      "weight": 0.5
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "chart_lifecycle_rendering",
+      "label": "Chart Rendering Lifecycle",
+      "nodes": [
+        "app_state",
+        "app_rendereditor",
+        "app_renderpreview",
+        "app_autosave",
+        "app_autoscalelines",
+        "app_exportpdf"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "app.js"
+    },
+    {
+      "id": "tier1_completed_features",
+      "label": "Tier 1 High-Priority Features (Completed)",
+      "nodes": [
+        "app_undomanager",
+        "app_searchandreplace",
+        "app_section_templates",
+        "app_batcheventlisteners",
+        "app_state"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "project_summary.md"
+    },
+    {
+      "id": "tauri_desktop_app",
+      "label": "Tauri Desktop App Architecture",
+      "nodes": [
+        "main_main",
+        "lib_run",
+        "buildrs_main",
+        "projectsummary_tauri"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src-tauri/src/main.rs"
+    },
+    {
+      "id": "tauri_platform_icon_asset_pipeline",
+      "label": "Tauri Platform Icon Asset Pipeline \u2014 25 iOS AppIcon variants across required Apple sizes (20x20 through 512@2x) and 15 Android adaptive icon variants (foreground, standard, round) across mdpi through xxxhdpi densities",
+      "nodes": [
+        "tauri_icon_platform_variants",
+        "tauri_icon_color_palette"
+      ],
+      "edges": [],
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 181831,
+  "output_tokens": 32089
+}

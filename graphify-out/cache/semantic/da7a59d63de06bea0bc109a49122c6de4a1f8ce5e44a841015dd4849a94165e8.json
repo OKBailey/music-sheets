@@ -1,0 +1,1 @@
+{"nodes": [{"id": "lib_run", "label": "run", "file_type": "code", "source_file": "src-tauri/src/lib.rs", "source_location": "L2-L16", "source_url": null, "captured_at": null, "author": null, "contributor": null}], "edges": [], "hyperedges": []}

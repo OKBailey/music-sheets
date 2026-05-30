@@ -46,6 +46,20 @@
   --accent-success: #22cc88;
   --accent-warning: #ffaa22;
 
+  /* Print / Chart Colors */
+  --print-intro: #cc00cc;
+  --print-verse1: #cc1800;
+  --print-verse2: #ff7a00;
+  --print-verse3: #8a2be2;
+  --print-verse4: #0070c0;
+  --print-verse5: #00b050;
+  --print-chorus: #217a14;
+  --print-bridge: #6a1f9a;
+  --print-outro: #6b6b6b;
+  --print-instrumental: #1a55d4;
+  --print-custom: #9b5c00;
+  --print-chord: #1a55d4;
+
   /* Spacing */
   --space-xs: 4px;
   --space-sm: 8px;
@@ -77,7 +91,7 @@
   --chart-title-size: 17.6px;
   --chart-chord-size: 17.6px;
   --chart-lyric-size: 17.6px;
-  --chart-lyric-bold-size: 23.5px;
+  --chart-lyric-bold-size: 17.6px;
   --chart-meta-size: 17.6px;
   --chart-artist-size: 14px;
   --chart-bpm-size: 12px;
@@ -164,6 +178,13 @@ body {
   font-size: 14px;
 }
 
+.toolbar-brand-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
 .toolbar-brand-text {
   font-weight: 700;
   font-size: 15px;
@@ -225,6 +246,50 @@ body {
   border-bottom: none;
 }
 
+.sidebar-section:last-child {
+  border-bottom: none;
+}
+
+.sidebar-header-compact {
+  padding: 0 0 var(--space-md) 0;
+  border: none;
+}
+
+.sidebar-section-flex {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-notes {
+  resize: vertical;
+}
+
+.library-search-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.library-search-input {
+  flex: 1;
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+.library-sort-select {
+  width: auto;
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+.saved-charts-list {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  overflow-y: auto;
+  flex: 1;
+}
+
 /* --- Editor Panel (Center) --- */
 .editor-panel {
   flex: 1;
@@ -248,6 +313,18 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+}
+
+.editor-toolbar-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.template-select {
+  width: 150px;
+  padding: 4px 8px;
+  font-size: 11px;
 }
 
 .editor-sections {
@@ -287,6 +364,19 @@ body {
   text-transform: uppercase;
   letter-spacing: 1.2px;
   color: var(--text-tertiary);
+}
+
+.preview-header-controls {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.zoom-level-text {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  min-width: 36px;
+  text-align: center;
+  line-height: 28px;
 }
 
 .preview-scroll {
@@ -495,44 +585,6 @@ body {
 
 .section-drag-handle:active {
   cursor: grabbing;
-}
-
-.section-type-badge {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  padding: 3px 10px;
-  border-radius: 100px;
-  color: #fff;
-}
-
-.section-type-badge.intro {
-  background: var(--accent-intro);
-}
-
-.section-type-badge.verse {
-  background: var(--accent-verse1);
-}
-
-.section-type-badge.chorus {
-  background: var(--accent-chorus);
-}
-
-.section-type-badge.bridge {
-  background: var(--accent-bridge);
-}
-
-.section-type-badge.outro {
-  background: var(--accent-outro);
-}
-
-.section-type-badge.instrumental {
-  background: var(--accent-instrumental);
-}
-
-.section-type-badge.custom {
-  background: var(--accent-primary);
 }
 
 /* ---- Per-type color coding ---- */
@@ -816,6 +868,18 @@ body {
   letter-spacing: 0.5px;
 }
 
+.repeat-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-left: auto;
+}
+
+.custom-label-input {
+  width: 120px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
 .section-repeat-input {
   width: 36px;
   padding: 4px 6px;
@@ -878,12 +942,12 @@ body {
 
 .chart-paper {
   position: relative;
-  width: 372px;
-  min-height: 500px;
+  width: 612px;
+  min-height: 792px;
   background: #ffffff;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
-  padding: 32px 28px;
+  padding: 24px 40px;
   font-family: var(--chart-font);
   color: #000;
   text-align: center;
@@ -939,31 +1003,31 @@ body {
 
 /* Each section type gets a distinct color — bridge is purple, not green */
 .chart-section-label.intro {
-  color: #cc00cc;
+  color: var(--print-intro);
 }
 
 .chart-section-label.verse {
-  color: #cc1800;
+  color: var(--print-verse1);
 }
 
 .chart-section-label.chorus {
-  color: #217a14;
+  color: var(--print-chorus);
 }
 
 .chart-section-label.bridge {
-  color: #6a1f9a;
+  color: var(--print-bridge);
 }
 
 .chart-section-label.outro {
-  color: #6b6b6b;
+  color: var(--print-outro);
 }
 
 .chart-section-label.instrumental {
-  color: #1a55d4;
+  color: var(--print-instrumental);
 }
 
 .chart-section-label.custom {
-  color: #9b5c00;
+  color: var(--print-custom);
 }
 
 .chart-verse-number {
@@ -972,29 +1036,29 @@ body {
 }
 
 .chart-verse-number.v1 {
-  color: #ff1f00;
+  color: var(--print-verse1);
 }
 
 .chart-verse-number.v2 {
-  color: #ff9200;
+  color: var(--print-verse2);
 }
 
 .chart-verse-number.v3 {
-  color: #7030a0;
+  color: var(--print-verse3);
 }
 
 .chart-verse-number.v4 {
-  color: #0070c0;
+  color: var(--print-verse4);
 }
 
 .chart-verse-number.v5 {
-  color: #00b050;
+  color: var(--print-verse5);
 }
 
 .chart-chord-line {
   font-size: var(--chart-chord-size);
   font-weight: 700;
-  color: rgb(32, 90, 255);
+  color: var(--print-chord);
   margin: 4px 0;
 }
 
@@ -1028,56 +1092,6 @@ body {
 .chart-grid-line .chart-lyric-line,
 .chart-grid-line .chart-lyric-bold {
   margin: 0;
-}
-
-/* ========================================================================
-   MODAL / DROPDOWN
-   ======================================================================== */
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  min-width: 160px;
-  padding: var(--space-xs);
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  z-index: 1000;
-  display: none;
-}
-
-.dropdown-menu.open {
-  display: block;
-  animation: dropdownIn 0.15s ease-out;
-}
-
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: 8px 12px;
-  border: none;
-  background: none;
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  width: 100%;
-  text-align: left;
-  transition: background var(--transition-fast);
-}
-
-.dropdown-item:hover {
-  background: var(--bg-surface-hover);
-}
-
-.dropdown-item .icon {
-  font-size: 14px;
-  width: 18px;
-  text-align: center;
 }
 
 /* ========================================================================
@@ -1303,6 +1317,18 @@ body {
   line-height: 1.6;
 }
 
+.chart-empty-placeholder {
+  color: #ccc;
+  font-size: 14px;
+  padding: 40px 0;
+}
+
+.chart-empty-placeholder-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+  opacity: 0.3;
+}
+
 /* ========================================================================
    PRINT / PDF STYLES
    ======================================================================== */
@@ -1481,7 +1507,7 @@ body {
   color: var(--text-secondary);
 }
 
-.section-collapse-toggle.collapsed {
+.section-card.collapsed .section-collapse-toggle {
   transform: rotate(-90deg);
 }
 
@@ -1721,6 +1747,36 @@ body {
   gap: var(--space-sm);
   justify-content: flex-end;
   margin-top: var(--space-lg);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.modal-content-sm {
+  max-width: 400px;
+}
+
+.shortcuts-table {
+  width: 100%;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.shortcuts-footer {
+  margin-top: 24px;
+}
+
+.modal-overlay-top {
+  z-index: 100000;
+}
+
+.confirm-message-text {
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  line-height: 1.5;
 }
 
 /* ========================================================================
