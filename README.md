@@ -6,26 +6,29 @@ Create professional music charts with color-coded chords, lyrics, and sections. 
 
 ## Installation
 
+To download the application, look at the right sidebar of this GitHub page and click on the latest version under the **Releases** section.
+
 ### macOS
 
-1. Go to the **Releases** page on GitHub.
-2. Download the `.dmg` file matching your Mac's processor:
-   - **Apple Silicon (M1/M2/M3/etc.)**: Download the file ending in `_aarch64.dmg`.
-   - **Intel**: Download the file ending in `_x64.dmg`.
-3. Open the downloaded `.dmg` file and drag **Chart Creator** into your **Applications** folder.
-4. **First-time Launch Setup (Unsigned App)**:
-   - Right-click (or Control-click) **Chart Creator** in your Applications folder and select **Open**.
-   - Click **Open** on the prompt that appears. This bypasses the unsigned app warning (you only need to do this once).
+1. Check your Mac's chip: Click the Apple icon () in the top-left corner of your screen and select **About This Mac**. Look at **Processor** or **Chip**.
+2. Go to the **Releases** page and download the `.dmg` file matching your Mac:
+   - **Apple Silicon (M1, M2, M3, M4, etc.)**: Download the file ending in `_aarch64.dmg`.
+   - **Intel Processor**: Download the file ending in `_x64.dmg`.
+3. Open the downloaded `.dmg` file and drag the **Chart Creator** icon into your **Applications** folder.
+4. **First-time Launch Setup (Unsigned App warning)**:
+   - Go to your Applications folder.
+   - Hold the **Control** key and click the app icon, then choose **Open** from the menu.
+   - Click **Open** in the warning box that appears. This is only needed for the very first launch.
 
 ### Windows
 
-1. Go to the **Releases** page on GitHub.
-2. Download the Windows installer:
-   - **Standard Installer**: Download the `.msi` file.
-   - **Standalone Executable**: Download the `.exe` file.
-3. Run the installer or double-click the `.exe` file to launch the app.
-4. **First-time Launch Setup (Unsigned App)**:
-   - If Windows SmartScreen flags the app as untrusted, click **More info** and then click **Run anyway**.
+1. Go to the **Releases** page and download either:
+   - **Standard Installer (`.msi`)**: Choose this to install the app permanently on your system.
+   - **Portable App (`.exe`)**: Choose this to run the app directly without installing anything.
+2. Double-click the downloaded file.
+3. **First-time Launch Setup (Windows SmartScreen warning)**:
+   - Since the app is unsigned, Windows may show a blue box saying *"Windows protected your PC"*.
+   - Click **More info** (under the text), then click **Run anyway**.
 
 ## Features
 
