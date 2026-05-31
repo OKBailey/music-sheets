@@ -1,19 +1,23 @@
 # Music Chart Creator — Project Summary & Documentation
 
-This document serves as a comprehensive reference guide for the **Music Chart Creator** application. It captures the project scope, technical file structure, core features, precise design rules, resolved engineering challenges, and the macOS workflow launcher.
+This document serves as a comprehensive reference guide for the **Music Chart Creator** application. It captures the project scope, technical file structure, core features, precise design rules, resolved engineering challenges, and Tauri desktop release workflow.
 
 ---
 
 ## 📁 File Structure
 
-The project lives in `/Users/randymitchell/Desktop/Antigravity/music-sheets` and consists of three core files, plus a macOS desktop helper application:
+The project lives in `/Users/randymitchell/Desktop/Antigravity/music-sheets` and uses a vanilla HTML/CSS/JS frontend split into small modules, bundled into a Tauri desktop shell.
 
 | File / Path | Type | Description |
 |:---|:---|:---|
-| 📄 **[index.html](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/index.html)** | Source Code | Main HTML structure. Features a three-panel workspace, undo/redo toolbar buttons, template selector, inline search & replace bar, batch action bar, text import modal, status bar, . |
-| 🎨 **[style.css](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/style.css)** | Source Code | Defines both the dark-themed editor dashboard and the print-styled white "paper" preview layout. |
-| ⚙️ **[app.js](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/app.js)** | Source Code | Application logic (~2,450 lines) covering state management, undo/redo stack, key transposition, section/line drag-and-drop, search & replace, multi-select batch actions, collapsible sections, section templates, debounced auto-saves, auto-scale line fitting, and PDF page budgeting. |
-| 🚀 **[Chart Creator.app](file:///Users/randymitchell/Desktop/Chart%20Creator.app)** | macOS App | Desktop launcher that starts the Python server on port 8080 and opens the browser. |
+| 📄 **[index.html](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/index.html)** | Source Code | Main HTML structure for the three-panel workspace, modals, toolbar, and script loading. |
+| 🎨 **[style.css](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/style.css)** | Source Code | Defines the editor dashboard, light/dark themes, modals, and print-styled chart preview. |
+| ⚙️ **[app.js](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/app.js)** | Source Code | App bootstrap and event binding glue. |
+| 🧩 **[src-js/](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/src-js/)** | Source Code | Feature modules for state, storage, editor rendering, preview rendering, import/export, transposition, undo, and UI helpers. |
+| 📦 **[build.js](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/build.js)** | Build Script | Copies browser assets into `dist/` for Tauri and local browser runs. |
+| 🖨️ **[jspdf.umd.min.js](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/jspdf.umd.min.js)** | Vendored Dependency | Official bundled `jsPDF 4.2.1` UMD build used for PDF export. |
+| 🚀 **[src-tauri/](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/src-tauri/)** | Tauri App | Rust/Tauri shell, configuration, capabilities, icons, and desktop packaging metadata. |
+| 🔐 **[.github/workflows/release.yml](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/.github/workflows/release.yml)** | Release Workflow | Cross-platform release builder with third-party actions pinned to full commit SHAs. |
 
 ---
 
@@ -54,7 +58,7 @@ The project lives in `/Users/randymitchell/Desktop/Antigravity/music-sheets` and
 * If a line would overflow, its font size is proportionally scaled down so the entire line fits on one row.
 * The minimum scale is clamped at 60% of the original font size to keep text readable.
 * Short lines remain at their full `17.6px` size; only the ones that need it are shrunk.
-* Scaling carries through to PDF export since `html2canvas` snapshots the DOM after auto-scaling runs.
+* PDF export uses the same sizing logic directly through jsPDF text measurement and drawing, so overflowing lines are scaled consistently without DOM screenshot capture.
 
 ---
 
@@ -98,7 +102,7 @@ The preview and PDF sheets use a strict set of hex colors:
 
 ## 🛠️ Resolved Engineering Hurdles
 
-1. **Fixed PDF Export Crash**: Replaced an unstable cdnjs link with a reliable jsDelivr CDN (`jspdf@2.5.2/dist/jspdf.umd.min.js`) and wrapped the library initialization to safely capture export errors.
+1. **Fixed PDF Export Crash**: Removed runtime CDN loading and bundled jsPDF locally, with guarded library initialization so export errors surface cleanly.
 2. **Fixed Preview Cutoff**: Swapped out CSS `transform: scale()` zooming for native CSS `zoom`. This ensures the scrolling wrapper wrapper correctly calculates its layout dimensions, removing any page-clipping bugs.
 3. **Fixed Sections Pane Scroll & Card Resizing**:
    * Removed `max-height` limits on section editor cards to prevent nested scrolling (mouse wheel traps).
@@ -119,8 +123,10 @@ The preview and PDF sheets use a strict set of hex colors:
 
 8. **Security Hardening (May 2026)**:
    * **XSS Fix**: Replaced `innerHTML` toast rendering with safe `textContent`-based DOM construction to prevent script injection via user-supplied chart titles and filenames.
-   * **Bundled CDN Libraries**: Downloaded `html2canvas` and `jsPDF` locally into the project, removing the runtime dependency on `cdnjs.cloudflare.com`. This eliminates supply-chain risk from CDN compromise and enables fully offline use.
+   * **Bundled PDF Library**: Downloaded the official `jsPDF 4.2.1` UMD artifact from npm and bundled it locally, removing runtime dependency on public CDNs for PDF export.
+   * **Removed Unused Capture Library**: Removed the unused vendored `html2canvas.min.js` file and script load, reducing the JavaScript supply-chain surface.
    * **Tightened CSP**: Stripped all external CDN domains (`cdnjs.cloudflare.com`, `jsdelivr.net`, `fonts.googleapis.com`, `fonts.gstatic.com`) from the Content Security Policy. Scripts now load only from `'self'`.
+   * **Pinned Release Actions**: Pinned GitHub Actions `uses:` entries to full commit SHAs so release builds do not follow mutable tags or branches.
 
 
 
@@ -193,7 +199,7 @@ All 7 High-Priority Workflow Enhancements and 7 Tier 2 UX & Design Polish featur
 * **Onboarding Walkthrough**: Step-by-step tour for first-time users.
 * **Status Bar Counters**: Line counts, page estimations, and zoom indicators.
 * **Section Minimap**: Color-coded structural navigator strip.
-* **Offline Support**: CDN libraries are now bundled locally; full offline PDF export works without a network connection.
+* **Offline Support**: The PDF dependency is bundled locally; full offline PDF export works without a network connection.
 
 * **Per-Line Font Size Override**: Allow manual adjustment of individual line font sizes in the editor, overriding the auto-scale behavior for lines that need specific sizing.
 * **Chord-Lyric Alignment**: Improve chord-over-lyric alignment so chord tokens sit directly above their corresponding syllables, matching standard chord-chart formatting.

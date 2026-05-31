@@ -3,8 +3,116 @@
 
   const STORAGE_KEY = 'chart-creator-state';
   const STORAGE_CHARTS_KEY = 'chart-creator-saved';
+  const STORAGE_SETTINGS_KEY = 'chart-creator-settings';
 
   let autoSaveTimeout = null;
+
+  function getTauriInvoke() {
+    return window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke
+      ? window.__TAURI__.core.invoke
+      : null;
+  }
+
+  function getChartFileName(name) {
+    const clean = (name || 'Untitled Chart')
+      .replace(/[<>:"/\\|?*\x00-\x1F]/g, '_')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/[. ]+$/g, '');
+    return `${clean || 'Untitled Chart'}.json`;
+  }
+
+  function renderFolderStatus(settings) {
+    const status = document.getElementById('settings-save-folder-status');
+    const folderInput = document.getElementById('settings-save-folder');
+    const chooseBtn = document.getElementById('btn-choose-save-folder');
+    const clearBtn = document.getElementById('btn-clear-save-folder');
+    if (!status || !folderInput || !chooseBtn || !clearBtn) return;
+
+    const nativeAvailable = !!getTauriInvoke();
+    folderInput.value = settings.saveDirectory || '';
+    chooseBtn.disabled = !nativeAvailable;
+    clearBtn.disabled = !settings.saveDirectory;
+
+    if (!nativeAvailable) {
+      status.textContent = 'Folder saving is available in the desktop app.';
+      status.className = 'settings-status info';
+    } else if (settings.saveDirectory) {
+      status.textContent = 'Saved songs will also be written as JSON files.';
+      status.className = 'settings-status success';
+    } else {
+      status.textContent = 'Choose a folder to mirror saved songs as JSON files.';
+      status.className = 'settings-status info';
+    }
+  }
+
+  app.getSettings = function() {
+    try {
+      const data = localStorage.getItem(STORAGE_SETTINGS_KEY);
+      return Object.assign({ saveDirectory: '' }, data ? JSON.parse(data) : {});
+    } catch {
+      return { saveDirectory: '' };
+    }
+  };
+
+  app.saveSettings = function(settings) {
+    const next = Object.assign({ saveDirectory: '' }, settings || {});
+    localStorage.setItem(STORAGE_SETTINGS_KEY, JSON.stringify(next));
+    app.renderSettings();
+  };
+
+  app.renderSettings = function() {
+    renderFolderStatus(app.getSettings());
+  };
+
+  app.openSettings = function() {
+    app.renderSettings();
+    const modal = document.getElementById('settings-modal');
+    if (modal) modal.style.display = 'flex';
+  };
+
+  app.closeSettings = function() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) modal.style.display = 'none';
+  };
+
+  app.chooseSaveDirectory = async function() {
+    const invoke = getTauriInvoke();
+    if (!invoke) {
+      app.showToast('Folder selection is available in the desktop app.', 'info');
+      app.renderSettings();
+      return;
+    }
+
+    try {
+      const directory = await invoke('choose_save_directory');
+      if (!directory) return;
+      app.saveSettings(Object.assign(app.getSettings(), { saveDirectory: directory }));
+      app.showToast('Save folder selected', 'success');
+    } catch (e) {
+      console.error('Choose save folder failed:', e);
+      app.showToast('Could not choose save folder', 'error');
+    }
+  };
+
+  app.clearSaveDirectory = function() {
+    app.saveSettings(Object.assign(app.getSettings(), { saveDirectory: '' }));
+    app.showToast('Save folder cleared', 'info');
+  };
+
+  app.saveChartFileToDirectory = async function(entry) {
+    const invoke = getTauriInvoke();
+    const settings = app.getSettings();
+    if (!invoke || !settings.saveDirectory) return null;
+
+    const fileName = getChartFileName(entry.name);
+    const contents = JSON.stringify(entry.data, null, 2);
+    return invoke('save_chart_file', {
+      directory: settings.saveDirectory,
+      fileName,
+      contents
+    });
+  };
 
   app.autoSave = function(immediate = false) {
     if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
@@ -69,7 +177,7 @@
     }
   };
 
-  app.saveChartToLibrary = function() {
+  app.saveChartToLibrary = async function() {
     if (!app.state.id) app.state.id = app.generateId();
     const name = app.state.title || 'Untitled Chart';
     const charts = app.getSavedCharts();
@@ -93,7 +201,14 @@
     try {
       localStorage.setItem(STORAGE_CHARTS_KEY, JSON.stringify(charts));
       if (app.renderSavedCharts) app.renderSavedCharts();
-      app.showToast(`"${name}" saved`, 'success');
+
+      try {
+        const filePath = await app.saveChartFileToDirectory(entry);
+        app.showToast(filePath ? `"${name}" saved to folder` : `"${name}" saved`, 'success');
+      } catch (fileErr) {
+        console.error('Folder save failed:', fileErr);
+        app.showToast(`"${name}" saved locally; folder save failed`, 'error');
+      }
     } catch (e) {
       console.error('Library save failed:', e);
       if (e.name === 'QuotaExceededError' || e.code === 22) {

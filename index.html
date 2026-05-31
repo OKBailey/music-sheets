@@ -38,6 +38,9 @@
       <button class="btn btn-sm" id="btn-shortcuts" title="Keyboard Shortcuts (?)">
         <span>❓</span>
       </button>
+      <button class="btn btn-sm btn-icon" id="btn-settings" title="Settings">
+        <span>⚙</span>
+      </button>
       <button class="btn btn-sm btn-primary" id="btn-export-pdf" title="Export as PDF">
         <span>📥</span> Export PDF
       </button>
@@ -275,6 +278,25 @@
 
 </div>
 
+<!-- Settings Modal -->
+<div id="settings-modal" class="modal-overlay">
+  <div class="modal-content modal-content-sm">
+    <h3 class="modal-title">Settings</h3>
+    <div class="settings-panel">
+      <label class="form-label" for="settings-save-folder">Saved songs folder</label>
+      <div class="settings-folder-row">
+        <input id="settings-save-folder" class="form-input settings-folder-input" type="text" readonly placeholder="Local library only">
+        <button class="btn btn-sm" id="btn-choose-save-folder">Choose</button>
+      </div>
+      <div class="settings-status" id="settings-save-folder-status"></div>
+      <button class="btn btn-sm btn-ghost" id="btn-clear-save-folder">Clear folder</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btn-settings-close">Done</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast Container -->
 <div class="toast-container" id="toast-container"></div>
 
@@ -327,8 +349,7 @@
   </div>
 </div>
 
-<!-- jsPDF + html2canvas (bundled locally) -->
-<script src="./html2canvas.min.js"></script>
+<!-- jsPDF (bundled locally) -->
 <script src="./jspdf.umd.min.js"></script>
 <script src="./src-js/transpose.js"></script>
 <script src="./src-js/constants.js"></script>

@@ -26,7 +26,6 @@ const filesToCopy = [
   'style.css',
   'icon.png',
   'src-js',
-  'html2canvas.min.js',
   'jspdf.umd.min.js'
 ];
 

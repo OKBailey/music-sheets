@@ -50,6 +50,106 @@
     return btn;
   }
 
+  function clearSectionDropMarkers() {
+    document.querySelectorAll('.section-card.drag-above, .section-card.drag-below').forEach(el => {
+      el.classList.remove('drag-above', 'drag-below');
+    });
+  }
+
+  function getSectionDropTarget(sourceId, x, y) {
+    let targetCard = document.elementFromPoint(x, y)?.closest('.section-card');
+    if (!targetCard || targetCard.dataset.sectionId === sourceId) return null;
+
+    const rect = targetCard.getBoundingClientRect();
+    return {
+      sectionId: targetCard.dataset.sectionId,
+      position: y < rect.top + rect.height / 2 ? 'above' : 'below',
+      card: targetCard
+    };
+  }
+
+  function moveSection(sourceId, targetId, position) {
+    const fromIdx = app.state.sections.findIndex(s => s.id === sourceId);
+    const toIdx = app.state.sections.findIndex(s => s.id === targetId);
+    if (fromIdx < 0 || toIdx < 0) return false;
+
+    let targetIdx = position === 'above' ? toIdx : toIdx + 1;
+    if (fromIdx < targetIdx) targetIdx--;
+    if (fromIdx === targetIdx) return false;
+
+    app.pushUndo();
+    const [moved] = app.state.sections.splice(fromIdx, 1);
+    app.state.sections.splice(targetIdx, 0, moved);
+    app.pushUndo();
+    app.commitChange();
+    return true;
+  }
+
+  function bindSectionReorder(section, card, dragHandle) {
+    const startDrag = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      let isDragging = false;
+      let currentTarget = null;
+      const startX = e.clientX;
+      const startY = e.clientY;
+
+      const cleanup = () => {
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', onEnd);
+        document.removeEventListener('pointercancel', onCancel);
+        dragHandle.releasePointerCapture?.(e.pointerId);
+        document.body.classList.remove('section-reorder-active');
+        card.classList.remove('dragging');
+        dragHandle.classList.remove('is-dragging');
+        clearSectionDropMarkers();
+      };
+
+      const onMove = moveEvent => {
+        const movedFarEnough = Math.abs(moveEvent.clientX - startX) > 3 || Math.abs(moveEvent.clientY - startY) > 3;
+        if (!isDragging && !movedFarEnough) return;
+
+        isDragging = true;
+        app.sectionDragState = section.id;
+        document.body.classList.add('section-reorder-active');
+        card.classList.add('dragging');
+        dragHandle.classList.add('is-dragging');
+        clearSectionDropMarkers();
+
+        currentTarget = getSectionDropTarget(section.id, moveEvent.clientX, moveEvent.clientY);
+        if (currentTarget) {
+          currentTarget.card.classList.add(currentTarget.position === 'above' ? 'drag-above' : 'drag-below');
+        }
+      };
+
+      const onEnd = () => {
+        const target = currentTarget;
+        cleanup();
+        app.sectionDragState = null;
+
+        if (isDragging && target) {
+          moveSection(section.id, target.sectionId, target.position);
+        }
+      };
+
+      const onCancel = () => {
+        cleanup();
+        app.sectionDragState = null;
+      };
+
+      dragHandle.setPointerCapture?.(e.pointerId);
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onEnd, { once: true });
+      document.addEventListener('pointercancel', onCancel, { once: true });
+    };
+
+    dragHandle.addEventListener('pointerdown', startDrag);
+    dragHandle.addEventListener('click', e => e.stopPropagation());
+  }
+
   app.renderEditor = function() {
     const editorSections = document.getElementById('editor-sections');
     const emptyState = document.getElementById('empty-state');
@@ -101,10 +201,12 @@
     });
     selectCheckbox.addEventListener('mousedown', e => e.stopPropagation());
 
-    const dragHandle = document.createElement('span');
+    const dragHandle = document.createElement('button');
+    dragHandle.type = 'button';
     dragHandle.className = 'section-drag-handle';
-    dragHandle.innerHTML = '⠿';
-    dragHandle.draggable = true;
+    dragHandle.textContent = '✋';
+    dragHandle.title = 'Drag section to reorder';
+    dragHandle.setAttribute('aria-label', 'Drag section to reorder');
 
     const typeSelect = document.createElement('select');
     typeSelect.className = 'section-type-select';
@@ -321,56 +423,7 @@
     });
     resizeObserver.observe(body);
 
-    const dragHandle = header.querySelector('.section-drag-handle');
-    dragHandle.addEventListener('dragstart', e => {
-      app.sectionDragState = section.id;
-      card.classList.add('dragging');
-      e.dataTransfer.setData('text/plain', section.id);
-      e.dataTransfer.setData('application/x-section-drag', 'section');
-      e.dataTransfer.effectAllowed = 'move';
-    });
-    dragHandle.addEventListener('dragend', () => {
-      app.sectionDragState = null;
-      card.classList.remove('dragging');
-      document.querySelectorAll('.drag-over, .drag-above, .drag-below').forEach(el => {
-        el.classList.remove('drag-over', 'drag-above', 'drag-below');
-      });
-    });
-    card.addEventListener('dragover', e => {
-      if (app.lineDragState || !app.sectionDragState) return;
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      
-      const rect = card.getBoundingClientRect();
-      const midY = rect.top + rect.height / 2;
-      card.classList.remove('drag-above', 'drag-below', 'drag-over');
-      card.classList.add(e.clientY < midY ? 'drag-above' : 'drag-below');
-    });
-    card.addEventListener('dragleave', e => {
-      if (!card.contains(e.relatedTarget)) {
-        card.classList.remove('drag-above', 'drag-below', 'drag-over');
-      }
-    });
-    card.addEventListener('drop', e => {
-      if (app.lineDragState) return;
-      e.preventDefault();
-      card.classList.remove('drag-above', 'drag-below', 'drag-over');
-      const draggedId = app.sectionDragState || e.dataTransfer.getData('text/plain');
-      if (!draggedId || draggedId === section.id) return;
-      const fromIdx = app.state.sections.findIndex(s => s.id === draggedId);
-      const toIdx = app.state.sections.findIndex(s => s.id === section.id);
-      if (fromIdx < 0 || toIdx < 0) return;
-      
-      const rect = card.getBoundingClientRect();
-      let targetIdx = e.clientY < (rect.top + rect.height / 2) ? toIdx : toIdx + 1;
-      
-      app.pushUndo();
-      const [moved] = app.state.sections.splice(fromIdx, 1);
-      if (fromIdx < targetIdx) targetIdx--;
-      app.state.sections.splice(targetIdx, 0, moved);
-      app.sectionDragState = null;
-      app.commitChange();
-    });
+    bindSectionReorder(section, card, header.querySelector('.section-drag-handle'));
 
     return card;
   };

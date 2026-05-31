@@ -77,6 +77,7 @@
 
     document.getElementById('btn-save-json').addEventListener('click', () => app.saveChartToLibrary());
     document.getElementById('btn-export-pdf').addEventListener('click', () => app.exportPDF());
+    document.getElementById('btn-settings').addEventListener('click', () => app.openSettings());
     
     document.getElementById('btn-load').addEventListener('click', () => {
       document.getElementById('file-input-json').click();
@@ -94,6 +95,10 @@
     document.getElementById('btn-shortcuts-close').addEventListener('click', () => {
       document.getElementById('shortcuts-modal').style.display = 'none';
     });
+
+    document.getElementById('btn-settings-close').addEventListener('click', () => app.closeSettings());
+    document.getElementById('btn-choose-save-folder').addEventListener('click', () => app.chooseSaveDirectory());
+    document.getElementById('btn-clear-save-folder').addEventListener('click', () => app.clearSaveDirectory());
 
     // Undo / Redo
     document.getElementById('btn-undo').addEventListener('click', () => app.undo());
@@ -237,6 +242,11 @@
         } else {
           app.undo();
         }
+      }
+
+      if (cmd && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        app.saveChartToLibrary();
       }
 
       if (cmd && e.key.toLowerCase() === 'h') {

@@ -58,8 +58,7 @@ To download the application, look at the right sidebar of this GitHub page and c
 ```bash
 git clone https://github.com/your-username/chart-creator.git
 cd chart-creator
-mkdir -p dist
-cp index.html app.js style.css icon.png src-js html2canvas.min.js jspdf.umd.min.js dist/
+node build.js
 npx http-server dist -p 1420
 ```
 
@@ -88,15 +87,18 @@ The packaged app lands in `src-tauri/target/release/bundle/`.
 |:---|:---|
 | Shell | Tauri 2 (Rust) |
 | UI | Vanilla HTML/CSS/JS — no framework |
-| PDF | jsPDF + html2canvas (bundled locally) |
+| PDF | jsPDF 4.2.1 (bundled locally) |
 | Storage | `localStorage` |
 
 ## Project Structure
 
 ```
 .
+├── .github/workflows/
+│   └── release.yml        # Pinned GitHub Actions release build
 ├── index.html              # Main HTML — three-panel layout, modals
 ├── app.js                  # App glue — event bindings, init, batch actions
+├── build.js                # Copies browser assets into dist/ for Tauri/dev server
 ├── style.css               # Editor (light/dark) and preview paper (print) styles
 ├── src-js/
 │   ├── constants.js        # Section metadata, verse colors
@@ -108,9 +110,10 @@ The packaged app lands in `src-tauri/target/release/bundle/`.
 │   ├── transpose.js        # Chord transposition engine
 │   ├── undo.js             # UndoManager with text-edit batching
 │   └── ui.js               # Toasts, confirm dialogs, status bar, search
-├── html2canvas.min.js      # Bundled capture library
 ├── jspdf.umd.min.js        # Bundled PDF library
 ├── src-tauri/              # Tauri backend (Rust)
+│   ├── Cargo.toml          # Rust dependencies
+│   ├── capabilities/       # Tauri runtime permissions
 │   ├── tauri.conf.json     # CSP, window config, build commands
 │   └── src/lib.rs          # Tauri app setup
 └── icon.png                # App icon
@@ -118,7 +121,7 @@ The packaged app lands in `src-tauri/target/release/bundle/`.
 
 ## Security
 
-All CDN dependencies are bundled locally. The Content Security Policy restricts scripts to `'self'` only.
+The PDF dependency is bundled locally. The Content Security Policy restricts scripts to `'self'` only, and release workflow actions are pinned to immutable commit SHAs.
 
 ## License
 
