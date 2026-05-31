@@ -187,20 +187,6 @@
       app.toggleSectionCollapse(section.id);
     });
 
-    const selectCheckbox = document.createElement('input');
-    selectCheckbox.type = 'checkbox';
-    selectCheckbox.className = 'section-select-checkbox';
-    selectCheckbox.title = 'Select section (Cmd+Click)';
-    selectCheckbox.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (e.shiftKey) {
-        app.selectSectionRange(section.id);
-      } else {
-        app.toggleSectionSelect(section.id, e);
-      }
-    });
-    selectCheckbox.addEventListener('mousedown', e => e.stopPropagation());
-
     const dragHandle = document.createElement('button');
     dragHandle.type = 'button';
     dragHandle.className = 'section-drag-handle';
@@ -261,25 +247,43 @@
       });
     }
 
-    const repeatLabel = document.createElement('span');
-    repeatLabel.className = 'repeat-label';
-    repeatLabel.textContent = '×';
-
-    const repeatInput = document.createElement('input');
-    repeatInput.className = 'section-repeat-input';
-    repeatInput.type = 'number';
-    repeatInput.min = '1';
-    repeatInput.max = '99';
-    repeatInput.value = section.repeat || '';
-    repeatInput.placeholder = '—';
-    repeatInput.addEventListener('change', () => {
-      app.pushUndo();
-      section.repeat = repeatInput.value ? parseInt(repeatInput.value) : null;
-      app.commitChange();
-    });
-
     const actions = document.createElement('div');
     actions.className = 'section-card-actions';
+
+    let repeatControl = null;
+    if (section.type !== 'verse') {
+      repeatControl = document.createElement('label');
+      repeatControl.className = 'section-repeat-control';
+      repeatControl.title = 'Repeat this section';
+
+      const repeatText = document.createElement('span');
+      repeatText.className = 'section-repeat-label';
+      repeatText.textContent = 'Repeat';
+
+      const repeatMark = document.createElement('span');
+      repeatMark.className = 'section-repeat-mark';
+      repeatMark.textContent = '×';
+
+      const repeatInput = document.createElement('input');
+      repeatInput.className = 'section-repeat-input';
+      repeatInput.type = 'number';
+      repeatInput.min = '1';
+      repeatInput.max = '99';
+      repeatInput.value = section.repeat || '';
+      repeatInput.placeholder = '—';
+      repeatInput.setAttribute('aria-label', 'Repeat count');
+      repeatInput.addEventListener('change', () => {
+        app.pushUndo();
+        section.repeat = repeatInput.value ? parseInt(repeatInput.value) : null;
+        app.commitChange();
+      });
+
+      repeatControl.appendChild(repeatText);
+      repeatControl.appendChild(repeatMark);
+      repeatControl.appendChild(repeatInput);
+    } else {
+      actions.classList.add('section-card-actions-push');
+    }
 
     const dupeBtn = createActionBtn('📋', 'Duplicate section', () => {
       app.pushUndo();
@@ -313,23 +317,12 @@
     actions.appendChild(deleteBtn);
 
     header.appendChild(collapseToggle);
-    header.appendChild(selectCheckbox);
     header.appendChild(dragHandle);
     header.appendChild(typeSelect);
     if (verseNumInput) header.appendChild(verseNumInput);
     if (customInput) header.appendChild(customInput);
-    header.appendChild(repeatLabel);
-    header.appendChild(repeatInput);
+    if (repeatControl) header.appendChild(repeatControl);
     header.appendChild(actions);
-
-    header.addEventListener('click', e => {
-      if (e.target.closest('button, select, input, .section-drag-handle')) return;
-      if (e.shiftKey) {
-        app.selectSectionRange(section.id);
-      } else if (e.metaKey || e.ctrlKey) {
-        app.toggleSectionSelect(section.id, e);
-      }
-    });
 
     return header;
   }
@@ -357,13 +350,13 @@
     const addInstructionBtn = createSmallBtn('+ Instruction', () => app.addLineToSection(section, 'instruction'));
     addInstructionBtn.style.color = 'var(--accent-intro)';
     
-    const addGridBtn = createSmallBtn('+ Grid', () => app.addLineToSection(section, 'grid'));
+    const addGridBtn = createSmallBtn('+ Chord + Lyric', () => app.addLineToSection(section, 'grid'));
     addGridBtn.style.color = 'var(--accent-primary)';
 
     addBar.appendChild(addChordBtn);
     addBar.appendChild(addLyricBtn);
-    addBar.appendChild(addInstructionBtn);
     addBar.appendChild(addGridBtn);
+    addBar.appendChild(addInstructionBtn);
 
     const lineDropZone = document.createElement('div');
     lineDropZone.className = 'line-drop-zone';
@@ -493,7 +486,7 @@
       { value: 'chord', label: 'Chord' },
       { value: 'lyric', label: 'Lyric' },
       { value: 'instruction', label: 'Instruction' },
-      { value: 'grid', label: 'Grid' }
+      { value: 'grid', label: 'Chord + Lyric' }
     ].forEach(opt => {
       const o = document.createElement('option');
       o.value = opt.value;

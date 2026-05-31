@@ -46,13 +46,12 @@ The project lives in `/Users/randymitchell/Desktop/Antigravity/music-sheets` and
 *  to undo,  to redo. Toolbar buttons show availability.
 * Text inputs batch edits via focus/blur: typing a chord progression counts as one undo step.
 
-### 6. Section Templates & Multi-Select
+### 6. Section Templates
 * 6 preset templates (Empty, Verse 4-bar, Chorus 8-bar, Bridge 4-bar, Chords-only, Instrumental 8-bar) from a dropdown next to Add Section.
-*  to select multiple sections. Floating batch bar offers Delete, Move, Transpose ±1, and Deselect All.
 
 ### 7. Line Drag-and-Drop & Search/Replace
 * Drag handles on each line for reordering within and between sections.
-* Inline search & replace bar () with case-sensitive and regex support across all chord, lyric, instruction, and grid content.
+* Inline search & replace bar () with case-sensitive and regex support across all chord, lyric, instruction, and chord + lyric content.
 * Preserves vocal line structure by preventing text wrapping in the chart preview and PDF export.
 * After each render, every chord, lyric, and instruction line is measured against the available paper width.
 * If a line would overflow, its font size is proportionally scaled down so the entire line fits on one row.
@@ -110,7 +109,7 @@ The preview and PDF sheets use a strict set of hex colors:
    * Debounced `autoSave()` by `500ms` to stop heavy, blocking localStorage IO calls from interrupting smooth mouse resize gestures.
 4. **Preserved Editor Text Selection**: Fine-tuned CSS drag handles so that dragging reorders cards, but users can still double-click and drag-select text inside the editor text fields without interference.
 5. **Implemented Auto-Scale Line Fitting**: Added a post-render measurement pass that temporarily sets each content line to nowrap, measures scrollWidth against the available paper width, and applies a proportional font-size reduction when the line overflows. The scale floors at 0.6x to preserve legibility, and the original white-space is restored afterward so only overflowing lines are affected.
-6. **Implemented High-Priority Workflow Enhancements**: All seven features from the roadmap — undo/redo (`UndoManager` with batched text edits), collapsible sections, section templates (6 presets), duplicate-with-focus flow, multi-select with batch actions, line drag-and-drop, and search & replace with regex support. Added 3 new keyboard shortcuts (`Cmd+Z`, `Cmd+Shift+Z`, `Cmd+H`). No localStorage migration needed — all new state keys are additive with falsy defaults.
+6. **Implemented High-Priority Workflow Enhancements**: Undo/redo (`UndoManager` with batched text edits), collapsible sections, section templates (6 presets), duplicate-with-focus flow, line drag-and-drop, and search & replace with regex support. Added 3 new keyboard shortcuts (`Cmd+Z`, `Cmd+Shift+Z`, `Cmd+H`). No localStorage migration needed — all new state keys are additive with falsy defaults.
 7. **Resolved Code Review Issues (May 2026)**:
    * **Improved Transposition Regex**: Resolved a bug in the transposition regex to support complex jazz and pop chord voicings (e.g. `maj7`, `m7b5`, `7#9`, `sus2`/`sus4`, `dim7`).
    * **ID-Based Storage Indexing**: Migrated stored chart deduplication from title name to a generated unique ID to prevent naming collisions.
@@ -165,7 +164,6 @@ All 7 High-Priority Workflow Enhancements and 7 Tier 2 UX & Design Polish featur
 | **Collapsible Sections** | Chevron toggle in section header, collapses card body, `section.collapsed` persisted |
 | **Section Templates** | `<select>` dropdown near Add Section with 6 presets (Empty, Verse 4-bar, Chorus 8-bar, Bridge 4-bar, Chords-only, Instrumental 8-bar) |
 | **Duplicate + Edit Flow** | Duplicated sections flash highlight, auto-increment verse numbers, scroll + focus first input |
-| **Multi-Select & Batch Actions** | `Cmd+Click` section selection, floating batch bar with Delete, Move Up/Down, Transpose, Deselect All |
 | **Line Drag-and-Drop** | Drag handles on each line, within-section and cross-section reordering via HTML5 drag API |
 | **Search & Replace** | Inline bar (`Cmd+H`) with case-sensitive and regex toggles, chord-aware replacement across all sections |
 | **Page Break Indicators** | Zoom-independent visual break lines overlaid in preview at 792pt equivalents (Letter page height) |
@@ -174,7 +172,7 @@ All 7 High-Priority Workflow Enhancements and 7 Tier 2 UX & Design Polish featur
 | **Arrangement Notes Field** | Free-text notes area in sidebar rendered under metadata with text-wrapping on preview/PDF |
 | **Dark Mode Preview Toggle** | Clean preview invert mode via `.chart-paper.dark-mode` selector |
 | **Improved Saved Charts** | Advanced library list with search filtering, alpha/key/date sorting, pinning favorites, and unique ID legacy migration |
-| **Delete Recovery Toast** | Confirms permanent library/batch deletions, while single section deletes trigger an Undo Toast notification |
+| **Delete Recovery Toast** | Confirms permanent library deletions, while single section deletes trigger an Undo Toast notification |
 
 ### New Keyboard Shortcuts
 

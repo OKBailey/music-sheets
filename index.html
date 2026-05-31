@@ -191,8 +191,8 @@
           <span class="editor-toolbar-title">Sections</span>
         </div>
         <div class="editor-toolbar-left">
-          <button class="btn btn-sm" id="btn-add-section-top" title="Add section">
-            <span>+</span> Add Section
+          <button class="btn btn-sm" id="btn-add-section-top" title="Add section at top">
+            <span>+</span> Add Section (Top)
           </button>
           <select class="form-select template-select" id="template-select" title="Section template"></select>
           <button class="btn btn-sm" id="btn-import-text" title="Import from pasted text">
@@ -224,20 +224,10 @@
 
       <div class="add-section-area" id="add-section-area" style="display: none;">
         <button class="add-section-btn" id="btn-add-section-bottom">
-          <span>+</span> Add Section
+          <span>+</span> Add Section (Bottom)
         </button>
       </div>
 
-      <!-- Batch action bar (floating, shown when multi-select active) -->
-      <div class="batch-action-bar" id="batch-action-bar" style="display:none;">
-        <span class="batch-count">0 sections selected</span>
-        <button class="btn btn-sm" id="batch-move-up" title="Move up">↑</button>
-        <button class="btn btn-sm" id="batch-move-down" title="Move down">↓</button>
-        <button class="btn btn-sm" id="batch-transpose-up" title="Transpose selected up">♯</button>
-        <button class="btn btn-sm" id="batch-transpose-down" title="Transpose selected down">♭</button>
-        <button class="btn btn-sm btn-danger" id="batch-delete" title="Delete selected">🗑 Delete</button>
-        <button class="btn btn-sm btn-ghost" id="batch-clear" title="Clear selection">✕</button>
-      </div>
     </section>
 
     <!-- ===== PREVIEW PANEL ===== -->

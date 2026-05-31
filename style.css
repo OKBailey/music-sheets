@@ -89,10 +89,12 @@
   /* Chart Preview (matches PDF style) */
   --chart-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --chart-title-size: 17.6px;
-  --chart-chord-size: 17.6px;
+  --chart-chord-size: 16px;
   --chart-lyric-size: 17.6px;
   --chart-lyric-bold-size: 17.6px;
   --chart-meta-size: 17.6px;
+  --chart-instruction-size: 15.5px;
+  --chart-section-label-size: 17.5px;
   --chart-artist-size: 14px;
   --chart-bpm-size: 12px;
 }
@@ -910,16 +912,33 @@ body.section-reorder-active {
   letter-spacing: 0.5px;
 }
 
-.repeat-label {
-  font-size: 11px;
-  color: var(--text-tertiary);
-  margin-left: auto;
-}
-
 .custom-label-input {
   width: 120px;
   padding: 4px 8px;
   font-size: 12px;
+}
+
+.section-repeat-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding: 2px 4px 2px 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+}
+
+.section-repeat-label,
+.section-repeat-mark {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.section-card-actions-push {
+  margin-left: auto;
 }
 
 .section-repeat-input {
@@ -928,7 +947,7 @@ body.section-reorder-active {
   font-size: 12px;
   text-align: center;
   background: var(--bg-primary);
-  border: 1px solid var(--border-subtle);
+  border: 0;
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
@@ -936,7 +955,7 @@ body.section-reorder-active {
 
 .section-repeat-input:focus {
   outline: none;
-  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-primary-glow);
 }
 
 /* --- Add Section Button --- */
@@ -1038,7 +1057,7 @@ body.section-reorder-active {
 }
 
 .chart-section-label {
-  font-size: 19.5px;
+  font-size: var(--chart-section-label-size);
   font-weight: 700;
   margin-bottom: 4px;
 }
@@ -1118,7 +1137,7 @@ body.section-reorder-active {
 }
 
 .chart-instruction {
-  font-size: var(--chart-meta-size);
+  font-size: var(--chart-instruction-size);
   color: #ff12ff;
   margin: 4px 0;
 }
@@ -1562,29 +1581,6 @@ body.section-reorder-active {
   border-bottom: none;
 }
 
-.section-card.selected {
-  border-color: var(--accent-primary) !important;
-  box-shadow: 0 0 0 2px var(--accent-primary-glow), 0 4px 16px rgba(108, 140, 255, 0.12) !important;
-}
-
-/* Batch Action Bar */
-.batch-action-bar {
-  position: fixed;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-lg);
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  z-index: 500;
-  animation: toastIn 0.25s ease-out;
-}
-
 /* ========================================================================
    LINE DRAG-AND-DROP
    ======================================================================== */
@@ -1917,14 +1913,42 @@ body.section-reorder-active {
 }
 
 .arrangement-notes {
-  margin: var(--space-md) 0;
-  padding: var(--space-sm) var(--space-md);
-  background: var(--bg-surface);
-  border-left: 3px solid var(--border-default);
-  font-size: 13px;
+  position: relative;
+  max-width: calc(100% - 96px);
+  margin: 14px auto 18px;
+  padding: 8px 32px;
+  background: transparent;
+  border: 0;
+  font-size: var(--chart-instruction-size);
   font-style: italic;
-  color: var(--text-secondary);
+  line-height: 1.35;
+  color: #444;
+  text-align: center;
   white-space: pre-wrap;
+}
+
+.arrangement-notes::before,
+.arrangement-notes::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  border-color: #666;
+}
+
+.arrangement-notes::before {
+  left: 0;
+  border-left: 2px solid #666;
+  border-top: 2px solid #666;
+  border-bottom: 2px solid #666;
+}
+
+.arrangement-notes::after {
+  right: 0;
+  border-right: 2px solid #666;
+  border-top: 2px solid #666;
+  border-bottom: 2px solid #666;
 }
 
 /* Make sure modal content table looks good */

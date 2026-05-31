@@ -224,11 +224,14 @@
       }
 
       const lineHeightMultiplier = 1.35;
-      const baseFontSize = 17.6;
+      const lyricFontSize = 17.6;
+      const chordFontSize = 16;
+      const instructionFontSize = 15.5;
+      const sectionHeaderFontSize = 17.5;
 
       if (app.state.title) {
         const titleText = `“${app.state.title}”`;
-        const size = getScaledFontSize(titleText, baseFontSize);
+        const size = getScaledFontSize(titleText, lyricFontSize);
         const height = size * lineHeightMultiplier;
         checkPageBreak(height);
         pdf.setFont('helvetica', 'bold');
@@ -269,7 +272,7 @@
         if (app.state.originalKey) {
           keyText += ` (originally in ${app.state.originalKey})`;
         }
-        const size = getScaledFontSize(keyText, baseFontSize);
+        const size = getScaledFontSize(keyText, lyricFontSize);
         const height = size * lineHeightMultiplier;
         checkPageBreak(height);
         pdf.setFont('helvetica', 'normal');
@@ -281,7 +284,7 @@
 
       if (app.state.capo) {
         const capoText = `Capo - ${app.state.capo}`;
-        const size = getScaledFontSize(capoText, baseFontSize);
+        const size = getScaledFontSize(capoText, lyricFontSize);
         const height = size * lineHeightMultiplier;
         checkPageBreak(height);
         pdf.setFont('helvetica', 'normal');
@@ -292,14 +295,32 @@
       }
 
       if (app.state.arrangementNotes) {
-        const lines = pdf.splitTextToSize(app.state.arrangementNotes, usableWidth);
-        const size = 13;
-        const height = size * lineHeightMultiplier * lines.length + 8;
+        const size = instructionFontSize;
+        const bracketLeft = marginX + 28;
+        const bracketRight = pageWidth - marginX - 28;
+        const bracketWidth = 9;
+        const bracketPad = 14;
+        const textWidth = bracketRight - bracketLeft - (bracketWidth + bracketPad) * 2;
+        const lines = pdf.splitTextToSize(app.state.arrangementNotes, textWidth);
+        const textHeight = size * lineHeightMultiplier * lines.length;
+        const height = textHeight + 16;
         checkPageBreak(height);
+
+        const top = y + 2;
+        const bottom = y + height - 2;
+        pdf.setDrawColor(102, 102, 102);
+        pdf.setLineWidth(1.25);
+        pdf.line(bracketLeft, top, bracketLeft, bottom);
+        pdf.line(bracketLeft, top, bracketLeft + bracketWidth, top);
+        pdf.line(bracketLeft, bottom, bracketLeft + bracketWidth, bottom);
+        pdf.line(bracketRight, top, bracketRight, bottom);
+        pdf.line(bracketRight - bracketWidth, top, bracketRight, top);
+        pdf.line(bracketRight - bracketWidth, bottom, bracketRight, bottom);
+
         pdf.setFont('helvetica', 'italic');
         pdf.setFontSize(size);
-        pdf.setTextColor(85, 85, 85);
-        pdf.text(lines, pageWidth / 2, y + size, { align: 'center' });
+        pdf.setTextColor(68, 68, 68);
+        pdf.text(lines, pageWidth / 2, y + size + 6, { align: 'center' });
         y += height;
       }
 
@@ -315,24 +336,24 @@
         if (firstRenderedLine) {
           const info = app.getLyricRenderInfo(firstRenderedLine, section, true);
           if (firstRenderedLine.type === 'chord') {
-            firstLineHeight = getScaledFontSize(firstRenderedLine.content, baseFontSize) * lineHeightMultiplier;
+            firstLineHeight = getScaledFontSize(firstRenderedLine.content, chordFontSize) * lineHeightMultiplier;
           } else if (firstRenderedLine.type === 'lyric') {
-            firstLineHeight = getScaledFontSize(info.fullText, baseFontSize) * lineHeightMultiplier;
+            firstLineHeight = getScaledFontSize(info.fullText, lyricFontSize) * lineHeightMultiplier;
           } else if (firstRenderedLine.type === 'instruction') {
-            firstLineHeight = getScaledFontSize(firstRenderedLine.content, baseFontSize) * lineHeightMultiplier;
+            firstLineHeight = getScaledFontSize(firstRenderedLine.content, instructionFontSize) * lineHeightMultiplier;
           } else if (firstRenderedLine.type === 'grid') {
             let h = 0;
-            if (firstRenderedLine.chords) h += getScaledFontSize(firstRenderedLine.chords, baseFontSize) * lineHeightMultiplier;
-            if (firstRenderedLine.content) h += getScaledFontSize(info.fullText, baseFontSize) * lineHeightMultiplier;
+            if (firstRenderedLine.chords) h += getScaledFontSize(firstRenderedLine.chords, chordFontSize) * lineHeightMultiplier;
+            if (firstRenderedLine.content) h += getScaledFontSize(info.fullText, lyricFontSize) * lineHeightMultiplier;
             firstLineHeight = h;
           }
         } else {
-          firstLineHeight = baseFontSize * lineHeightMultiplier;
+          firstLineHeight = lyricFontSize * lineHeightMultiplier;
         }
 
-        const headerSize = getScaledFontSize(headerText || 'SECTION', 19.5);
+        const headerSize = getScaledFontSize(headerText || 'SECTION', sectionHeaderFontSize);
         const headerHeight = headerText ? (headerSize * lineHeightMultiplier) : 0;
-        const spacerHeight = baseFontSize * 1.0;
+        const spacerHeight = lyricFontSize * 1.0;
 
         if (y + spacerHeight + headerHeight + firstLineHeight > usableHeight) {
           pdf.addPage();
@@ -354,7 +375,7 @@
           if (!line.content && !(line.type === 'chord' || (line.type === 'grid' && line.chords))) return;
 
           if (line.type === 'chord') {
-            const size = getScaledFontSize(line.content, baseFontSize);
+            const size = getScaledFontSize(line.content, chordFontSize);
             const height = size * lineHeightMultiplier;
             checkPageBreak(height);
             pdf.setFont('helvetica', 'bold');
@@ -366,7 +387,7 @@
             const info = app.getLyricRenderInfo(line, section, firstLyricInVerse);
             if (info.isVerseFirst) firstLyricInVerse = false;
 
-            const size = getScaledFontSize(info.fullText, baseFontSize);
+            const size = getScaledFontSize(info.fullText, lyricFontSize);
             const height = size * lineHeightMultiplier;
             checkPageBreak(height);
             pdf.setFontSize(size);
@@ -389,7 +410,7 @@
             }
             y += height;
           } else if (line.type === 'instruction') {
-            const size = getScaledFontSize(line.content, baseFontSize);
+            const size = getScaledFontSize(line.content, instructionFontSize);
             const height = size * lineHeightMultiplier;
             checkPageBreak(height);
             pdf.setFont('helvetica', 'italic');
@@ -402,7 +423,7 @@
             const fontName = useMonospace ? 'courier' : 'helvetica';
 
             if (line.chords) {
-              const size = getScaledFontSize(line.chords, baseFontSize);
+              const size = getScaledFontSize(line.chords, chordFontSize);
               const height = size * lineHeightMultiplier;
               checkPageBreak(height);
               pdf.setFont(fontName, 'bold');
@@ -416,7 +437,7 @@
               const info = app.getLyricRenderInfo(line, section, firstLyricInVerse);
               if (info.isVerseFirst) firstLyricInVerse = false;
 
-              const size = getScaledFontSize(info.fullText, baseFontSize);
+              const size = getScaledFontSize(info.fullText, lyricFontSize);
               const height = size * lineHeightMultiplier;
               checkPageBreak(height);
               pdf.setFontSize(size);

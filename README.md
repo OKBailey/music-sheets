@@ -30,15 +30,24 @@ To download the application, look at the right sidebar of this GitHub page and c
    - Since the app is unsigned, Windows may show a blue box saying *"Windows protected your PC"*.
    - Click **More info** (under the text), then click **Run anyway**.
 
+## Visual Walkthrough
+
+![Chart Creator Workspace Interface](walkthrough.png)
+
+The three-panel workspace provides an intuitive chart-building experience:
+
+1. **Song Details (Left Panel)**: Configure metadata, transpose key, specify capo settings, and add bracket-wrapped arrangement notes.
+2. **Sections Editor (Center Panel)**: Structure arrangement with templates, repeat counts, and drag-and-drop elements. Choose from line types: *Chord*, *Lyric*, *Chord + Lyric*, or *Instruction*.
+3. **Live Preview (Right Panel)**: View a real-time, print-ready preview with auto-scaled overflowing lines and page-break guides.
+
 ## Features
 
 - **Three-panel workspace** — sidebar for metadata, center for the section editor, right for live preview
 - **Smart transposition** — transpose entire charts by semitones with automatic sharp/flat spelling and complex chord support (slash chords, extensions, sus, dim, aug)
-- **Section editor** — drag-and-drop sections and lines, custom resize, collapsible cards, 6 preset templates (Verse, Chorus, Bridge, Intro, Instrumental, Empty)
-- **Color-coded output** — sections and chords use distinct colors matched to standard chart conventions
-- **PDF export** — page-budgeted letter-size output with auto-scaling lines, page numbers, and WYSIWYG fidelity to the preview
-- **Search and replace** — inline bar with regex and case-sensitive support across all chord, lyric, and instruction content
-- **Multi-select batch actions** — Cmd+Click to select multiple sections for bulk delete, move, duplicate, or transpose
+- **Section editor** — drag-and-drop sections and lines, custom resize, collapsible cards, 6 preset templates (Verse, Chorus, Bridge, Intro, Instrumental, Empty), and an inline repeat control for non-verse sections
+- **Color-coded output** — sections and chords use distinct colors matched to standard conventions with fine-tuned font sizing per element type (chords, lyrics, instructions, headers)
+- **PDF export** — page-budgeted letter-size output with auto-scaling lines, page numbers, bracket-wrapped arrangement notes, and WYSIWYG fidelity to the preview
+- **Search and replace** — inline bar with regex and case-sensitive support across all chord, lyric, instruction, and chord + lyric content
 - **Text import** — paste raw chart text and let the parser detect chord lines, section labels, and lyrics
 - **Library manager** — save charts to local storage with search, sort, and favorites
 - **Undo/redo** — 50-entry stack with batched text-editing so typing feels natural
@@ -97,7 +106,7 @@ The packaged app lands in `src-tauri/target/release/bundle/`.
 ├── .github/workflows/
 │   └── release.yml        # Pinned GitHub Actions release build
 ├── index.html              # Main HTML — three-panel layout, modals
-├── app.js                  # App glue — event bindings, init, batch actions
+├── app.js                  # App glue — event bindings and init
 ├── build.js                # Copies browser assets into dist/ for Tauri/dev server
 ├── style.css               # Editor (light/dark) and preview paper (print) styles
 ├── src-js/
