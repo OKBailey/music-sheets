@@ -4,6 +4,22 @@
 
 Create professional music charts with color-coded chords, lyrics, and sections. Export to PDF matching your band's chart format. Built with vanilla HTML/CSS/JS in a Tauri desktop shell.
 
+## Installation (macOS Only)
+
+> [!IMPORTANT]
+> **Chart Creator is currently macOS only.** Windows and Linux versions are not yet available.
+
+### How to Install
+
+1. Go to the **Releases** page on GitHub.
+2. Download the `.dmg` file matching your Mac's processor:
+   - **Apple Silicon (M1/M2/M3/etc.)**: Download the file ending in `_aarch64.dmg`.
+   - **Intel**: Download the file ending in `_x64.dmg`.
+3. Open the downloaded `.dmg` file and drag **Chart Creator** into your **Applications** folder.
+4. **First-time Launch Setup (Unsigned App)**:
+   - Right-click (or Control-click) **Chart Creator** in your Applications folder and select **Open**.
+   - Click **Open** on the prompt that appears. This bypasses the unsigned app warning (you only need to do this once).
+
 ## Features
 
 - **Three-panel workspace** — sidebar for metadata, center for the section editor, right for live preview
@@ -92,7 +108,7 @@ The packaged app lands in `src-tauri/target/release/bundle/`.
 
 ## Security
 
-All CDN dependencies are bundled locally. The Content Security Policy restricts scripts to `'self'` only. A security review dated 2026-05-30 is available in [security-review-2026-05-30.md](security-review-2026-05-30.md).
+All CDN dependencies are bundled locally. The Content Security Policy restricts scripts to `'self'` only.
 
 ## License
 
