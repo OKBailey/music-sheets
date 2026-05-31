@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Skill(requesting-code-review)"
-    ]
-  },
-  "$version": 4
-}
