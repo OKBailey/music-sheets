@@ -12,3 +12,10 @@
 feature_suggestions.md
 walkthrough.md
 fixes_*
+
+# Agent and project outputs
+.claude/
+claude/
+.qwen/
+qwen/
+*graphify*

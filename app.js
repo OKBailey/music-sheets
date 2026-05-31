@@ -198,8 +198,9 @@
     });
 
     // Preview Tools
-    document.getElementById('btn-dark-mode').addEventListener('click', () => {
-      document.getElementById('chart-paper').classList.toggle('dark-mode');
+    document.getElementById('btn-dark-mode').addEventListener('click', (e) => {
+      document.body.classList.toggle('light-mode');
+      e.target.textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
     });
 
     document.getElementById('btn-zoom-in').addEventListener('click', () => {

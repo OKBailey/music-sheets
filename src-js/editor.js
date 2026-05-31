@@ -323,37 +323,52 @@
 
     const dragHandle = header.querySelector('.section-drag-handle');
     dragHandle.addEventListener('dragstart', e => {
+      app.sectionDragState = section.id;
       card.classList.add('dragging');
       e.dataTransfer.setData('text/plain', section.id);
+      e.dataTransfer.setData('application/x-section-drag', 'section');
       e.dataTransfer.effectAllowed = 'move';
     });
     dragHandle.addEventListener('dragend', () => {
+      app.sectionDragState = null;
       card.classList.remove('dragging');
-      document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      document.querySelectorAll('.drag-over, .drag-above, .drag-below').forEach(el => {
+        el.classList.remove('drag-over', 'drag-above', 'drag-below');
+      });
     });
     card.addEventListener('dragover', e => {
-      if (app.lineDragState) return;
+      if (app.lineDragState || !app.sectionDragState) return;
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
-      card.classList.add('drag-over');
+      
+      const rect = card.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      card.classList.remove('drag-above', 'drag-below', 'drag-over');
+      card.classList.add(e.clientY < midY ? 'drag-above' : 'drag-below');
     });
     card.addEventListener('dragleave', e => {
       if (!card.contains(e.relatedTarget)) {
-        card.classList.remove('drag-over');
+        card.classList.remove('drag-above', 'drag-below', 'drag-over');
       }
     });
     card.addEventListener('drop', e => {
       if (app.lineDragState) return;
       e.preventDefault();
-      card.classList.remove('drag-over');
-      const draggedId = e.dataTransfer.getData('text/plain');
-      if (draggedId === section.id) return;
+      card.classList.remove('drag-above', 'drag-below', 'drag-over');
+      const draggedId = app.sectionDragState || e.dataTransfer.getData('text/plain');
+      if (!draggedId || draggedId === section.id) return;
       const fromIdx = app.state.sections.findIndex(s => s.id === draggedId);
       const toIdx = app.state.sections.findIndex(s => s.id === section.id);
       if (fromIdx < 0 || toIdx < 0) return;
+      
+      const rect = card.getBoundingClientRect();
+      let targetIdx = e.clientY < (rect.top + rect.height / 2) ? toIdx : toIdx + 1;
+      
       app.pushUndo();
       const [moved] = app.state.sections.splice(fromIdx, 1);
-      app.state.sections.splice(toIdx, 0, moved);
+      if (fromIdx < targetIdx) targetIdx--;
+      app.state.sections.splice(targetIdx, 0, moved);
+      app.sectionDragState = null;
       app.commitChange();
     });
 

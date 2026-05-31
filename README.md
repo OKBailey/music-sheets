@@ -2,14 +2,11 @@
 
 # Chart Creator
 
-Create professional music charts with color-coded chords, lyrics, and sections. Export to PDF matching your band's chart format. Built with vanilla HTML/CSS/JS in a Tauri desktop shell.
+Create professional music charts with color-coded chords, lyrics, and sections. Export to PDF. Great for dialing in new tracks with your band and even writing new songs! Built with vanilla HTML/CSS/JS in a Tauri desktop shell.
 
-## Installation (macOS Only)
+## Installation
 
-> [!IMPORTANT]
-> **Chart Creator is currently macOS only.** Windows and Linux versions are not yet available.
-
-### How to Install
+### macOS
 
 1. Go to the **Releases** page on GitHub.
 2. Download the `.dmg` file matching your Mac's processor:
@@ -19,6 +16,16 @@ Create professional music charts with color-coded chords, lyrics, and sections. 
 4. **First-time Launch Setup (Unsigned App)**:
    - Right-click (or Control-click) **Chart Creator** in your Applications folder and select **Open**.
    - Click **Open** on the prompt that appears. This bypasses the unsigned app warning (you only need to do this once).
+
+### Windows
+
+1. Go to the **Releases** page on GitHub.
+2. Download the Windows installer:
+   - **Standard Installer**: Download the `.msi` file.
+   - **Standalone Executable**: Download the `.exe` file.
+3. Run the installer or double-click the `.exe` file to launch the app.
+4. **First-time Launch Setup (Unsigned App)**:
+   - If Windows SmartScreen flags the app as untrusted, click **More info** and then click **Run anyway**.
 
 ## Features
 
@@ -32,7 +39,7 @@ Create professional music charts with color-coded chords, lyrics, and sections. 
 - **Text import** — paste raw chart text and let the parser detect chord lines, section labels, and lyrics
 - **Library manager** — save charts to local storage with search, sort, and favorites
 - **Undo/redo** — 50-entry stack with batched text-editing so typing feels natural
-- **Dark mode preview** — toggle the chart paper to dark mode
+- **Light/Dark themes** — toggle the app interface between dark and light modes while keeping the chart paper pristine for printing
 - **Keyboard-driven** — `Cmd+Z` undo, `Cmd+Shift+Z` redo, `Cmd+H` find & replace, `?` shortcut cheat sheet
 
 ## Quick Start
@@ -87,7 +94,7 @@ The packaged app lands in `src-tauri/target/release/bundle/`.
 .
 ├── index.html              # Main HTML — three-panel layout, modals
 ├── app.js                  # App glue — event bindings, init, batch actions
-├── style.css               # Editor (dark) and preview paper (print) styles
+├── style.css               # Editor (light/dark) and preview paper (print) styles
 ├── src-js/
 │   ├── constants.js        # Section metadata, verse colors
 │   ├── state.js            # State factory, ID generation, templates
