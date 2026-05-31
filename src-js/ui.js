@@ -13,7 +13,13 @@
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     const icon = type === 'success' ? '✓' : type === 'error' ? '!' : 'ℹ';
-    toast.innerHTML = `<span style="font-weight:bold">${icon}</span> <span>${message}</span>`;
+    const iconSpan = document.createElement('span');
+    iconSpan.style.fontWeight = 'bold';
+    iconSpan.textContent = icon;
+    const msgSpan = document.createElement('span');
+    msgSpan.textContent = message;
+    toast.appendChild(iconSpan);
+    toast.appendChild(msgSpan);
 
     if (type === 'success' && message.includes('saved')) {
       const undoBtn = document.createElement('button');

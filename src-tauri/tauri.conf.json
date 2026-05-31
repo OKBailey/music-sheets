@@ -6,8 +6,8 @@
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:1420",
-    "beforeDevCommand": "mkdir -p dist && cp -r index.html app.js style.css icon.png src-js dist/ && npx -y http-server dist -p 1420",
-    "beforeBuildCommand": "mkdir -p dist && cp -r index.html app.js style.css icon.png src-js dist/"
+    "beforeDevCommand": "mkdir -p dist && cp -r index.html app.js style.css icon.png src-js html2canvas.min.js jspdf.umd.min.js dist/ && npx -y http-server dist -p 1420",
+    "beforeBuildCommand": "mkdir -p dist && cp -r index.html app.js style.css icon.png src-js html2canvas.min.js jspdf.umd.min.js dist/"
   },
   "app": {
     "windows": [
@@ -20,7 +20,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'"
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'"
     }
   },
   "bundle": {

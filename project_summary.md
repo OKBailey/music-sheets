@@ -10,7 +10,7 @@ The project lives in `/Users/randymitchell/Desktop/Antigravity/music-sheets` and
 
 | File / Path | Type | Description |
 |:---|:---|:---|
-| 📄 **[index.html](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/index.html)** | Source Code | Main HTML structure. Features a three-panel workspace, undo/redo toolbar buttons, template selector, inline search & replace bar, batch action bar, text import modal, status bar, and CDN script loaders. |
+| 📄 **[index.html](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/index.html)** | Source Code | Main HTML structure. Features a three-panel workspace, undo/redo toolbar buttons, template selector, inline search & replace bar, batch action bar, text import modal, status bar, . |
 | 🎨 **[style.css](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/style.css)** | Source Code | Defines both the dark-themed editor dashboard and the print-styled white "paper" preview layout. |
 | ⚙️ **[app.js](file:///Users/randymitchell/Desktop/Antigravity/music-sheets/app.js)** | Source Code | Application logic (~2,450 lines) covering state management, undo/redo stack, key transposition, section/line drag-and-drop, search & replace, multi-select batch actions, collapsible sections, section templates, debounced auto-saves, auto-scale line fitting, and PDF page budgeting. |
 | 🚀 **[Chart Creator.app](file:///Users/randymitchell/Desktop/Chart%20Creator.app)** | macOS App | Desktop launcher that starts the Python server on port 8080 and opens the browser. |
@@ -117,6 +117,12 @@ The preview and PDF sheets use a strict set of hex colors:
    * **Centralized Modal Styles**: Cleaned up inline CSS for the text import modal and moved layout properties to `style.css`.
    * **PDF Verse Colors**: Aligned the PDF export colors with the CSS stylesheet rules for verses 4 and 5.
 
+8. **Security Hardening (May 2026)**:
+   * **XSS Fix**: Replaced `innerHTML` toast rendering with safe `textContent`-based DOM construction to prevent script injection via user-supplied chart titles and filenames.
+   * **Bundled CDN Libraries**: Downloaded `html2canvas` and `jsPDF` locally into the project, removing the runtime dependency on `cdnjs.cloudflare.com`. This eliminates supply-chain risk from CDN compromise and enables fully offline use.
+   * **Tightened CSP**: Stripped all external CDN domains (`cdnjs.cloudflare.com`, `jsdelivr.net`, `fonts.googleapis.com`, `fonts.gstatic.com`) from the Content Security Policy. Scripts now load only from `'self'`.
+
+
 
 ---
 
@@ -187,7 +193,7 @@ All 7 High-Priority Workflow Enhancements and 7 Tier 2 UX & Design Polish featur
 * **Onboarding Walkthrough**: Step-by-step tour for first-time users.
 * **Status Bar Counters**: Line counts, page estimations, and zoom indicators.
 * **Section Minimap**: Color-coded structural navigator strip.
-* **Offline Support**: Cache CDNs via service workers for offline use.
+* **Offline Support**: CDN libraries are now bundled locally; full offline PDF export works without a network connection.
 
 * **Per-Line Font Size Override**: Allow manual adjustment of individual line font sizes in the editor, overriding the auto-scale behavior for lines that need specific sizing.
 * **Chord-Lyric Alignment**: Improve chord-over-lyric alignment so chord tokens sit directly above their corresponding syllables, matching standard chord-chart formatting.
