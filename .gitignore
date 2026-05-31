@@ -3,3 +3,12 @@
 /node_modules/
 *.log
 .DS_Store
+
+# Planning, reviews, and audits
+*implementation_plan*
+*code-review*
+*security-review*
+*audit*
+feature_suggestions.md
+walkthrough.md
+fixes_*
